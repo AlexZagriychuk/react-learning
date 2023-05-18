@@ -1,4 +1,4 @@
-import { increment } from './counterSlice'
+import { incremented } from './counterSlice'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 function Counter() {
@@ -8,7 +8,7 @@ function Counter() {
     return (
         <div>
             <h2>Counter Component With Redux</h2>
-            <button onClick={() => dispatch(increment())}>Increment count</button>
+            <button onClick={() => dispatch(incremented())}>Increment count</button>
             <div>Count is: {count}</div>
         </div>
     )

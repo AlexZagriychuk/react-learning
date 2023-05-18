@@ -13,13 +13,14 @@ export const counterSlice = createSlice({
     name: "counter",
     initialState,
     reducers: {
-        increment: state => {
+        // Case reducers should have meaningful past-tense "event"-style names
+        incremented: state => {
             state.value += 1
         }
     }
 })
 
-export const { increment } = counterSlice.actions
+export const { incremented } = counterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.counter.value

@@ -1,8 +1,8 @@
-import { incremented } from './counterSlice'
+import { incremented, selectCount } from './counterSlice'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 function Counter() {
-    const count = useAppSelector(state => state.counter.value)
+    const count = useAppSelector(selectCount)
     const dispatch = useAppDispatch()
 
     return (

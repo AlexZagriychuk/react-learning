@@ -1,5 +1,5 @@
-import { incremented, selectCount } from './counterSlice'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { incremented, selectCount } from '../redux/modules/counter'
+import { useAppSelector, useAppDispatch } from '../redux/hooks'
 
 function Counter() {
     const count = useAppSelector(selectCount)

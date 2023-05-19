@@ -1,7 +1,7 @@
 import './App.css'
 import CounterClassComponent from './components/CounterClassComponent'
 import CounterFunctionalComponent from './components/CounterFunctionalComponent'
-import Counter from './features/counter/Counter'
+import Counter from './components/Counter'
 
 function App() {
   return (

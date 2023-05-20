@@ -25,7 +25,7 @@ class CounterClassComponent extends Component<Props, State> {
     render() {
         return (
             <div>
-                <h2>CounterClassComponent</h2>
+                <h2>CounterClassComponent (this.setState)</h2>
                 <button onClick={this.handleCountChange}>Increment count</button>
                 <div>Count is: {this.state.count}</div>
             </div>

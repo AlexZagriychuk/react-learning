@@ -1,0 +1,12 @@
+.horizontal-nav-bar ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    list-style: none;
+    padding-left: 0;
+}
+
+.horizontal-nav-bar li:nth-child(n+2) {
+    margin-left: 20px;
+}

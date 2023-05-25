@@ -22,10 +22,52 @@
     display: flex;
     padding: 0px 5px;
     align-items: center;
+    cursor: pointer;
 
     border-radius: 15px;
-    outline: 1px solid rebeccapurple;
-    box-shadow: 1px 1px 5px rebeccapurple;
+    outline: 2px solid rebeccapurple;
+    box-shadow: 2px 2px 5px rebeccapurple;
+
+    position: relative;
+}
+
+.nav-bar-user-select {
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+    z-index: 1;
+
+    width: 100%;
+    background-color: white;
+    box-shadow: 5px 5px 10px gray;
+    border-radius: 10px;
+
+    display: none;
+}
+
+.nav-bar-user-select.active {
+    display: block;
+}
+
+.nav-bar-user-select div {
+    padding: 5px;
+    border: 1px solid rebeccapurple;
+    word-wrap: break-word;
+}
+
+.nav-bar-user-select div:first-of-type {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.nav-bar-user-select div:last-of-type {
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+.nav-bar-user-select div:hover {
+    font-weight: bold;
+    background-color: whitesmoke;
 }
 
 .nav-bar-user-avatar {

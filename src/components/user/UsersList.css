@@ -1,0 +1,39 @@
+.users-list {
+    padding: 0 0 20px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.users-list li {
+    border: 1px solid lightskyblue;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgb(215, 240, 255);
+    overflow: hidden;
+
+    display: flex;
+}
+
+
+.user-info {
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.user-info b {
+    color: darkblue;
+    margin-right: 10px;
+}
+
+.user-avatar {
+    height: 200px;
+    width: 300px;
+    object-fit: fill;
+    border-radius: 10px;
+}

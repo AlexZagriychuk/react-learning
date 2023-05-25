@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <PostsList />,
       },
       {
-        path: "todos",
+        path: "todo",
         element: <ToDoList />,
       },
       {

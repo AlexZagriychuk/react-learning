@@ -1,3 +1,10 @@
+.horizontal-nav-bar {
+    padding: 5px;
+    display: flex;
+    
+    justify-content: space-between;
+}
+
 .horizontal-nav-bar ul {
     display: flex;
     flex-direction: row;
@@ -9,4 +16,33 @@
 
 .horizontal-nav-bar li:nth-child(n+2) {
     margin-left: 20px;
+}
+
+.nav-bar-user {
+    display: flex;
+    padding: 0px 5px;
+    align-items: center;
+}
+
+.nav-bar-user-avatar {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.nav-bar-user-data {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.nav-bar-user-name {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.nav-bar-user-type {
+    font-size: 13px;
+    color: gray;
 }

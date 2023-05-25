@@ -9,7 +9,7 @@ export interface User {
     type: UserType,
     name: string,
     avatar: string,
-    registered: Date
+    registered: string
 }
 
 export interface Users {
@@ -28,28 +28,28 @@ export const getAllUsers = () : Users => {
             type: UserType.ADMIN,
             name: "Michael_Scott_Best_Admin",
             avatar: "/michael scott.jpg",
-            registered: new Date("12/23/2022")
+            registered: "12/23/2022"
         },
         {
             id: 2,
             type: UserType.WRITER,
             name: "Jane_Doe",
             avatar: "https://picsum.photos/id/342/300/200",
-            registered: new Date("2/12/2023")
+            registered: "2/12/2023"
         },
         {
             id: 3,
             type: UserType.WRITER,
             name: "John_771",
             avatar: "https://picsum.photos/id/281/300/200",
-            registered: new Date("2/27/2023")
+            registered: "2/27/2023"
         },
         {
             id: 4,
             type: UserType.READER,
             name: "Alisa",
             avatar: "https://picsum.photos/id/237/300/200",
-            registered: new Date("5/1/2023")
+            registered:"5/1/2023"
         }
     ]
 

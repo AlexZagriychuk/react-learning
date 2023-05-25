@@ -34,7 +34,7 @@ export default function PostsListItem(props: {post: Post, user: User}) {
                 <img src={props.user.avatar} alt="" className="post-user-img" />
                 <span className="post-user-name">{props.user.name}</span>
                 <span className="post-user-type">({props.user.type})</span>
-                <span className="post-user-registered">Registered:<br/>{props.user.registered.toLocaleDateString()}</span>
+                <span className="post-user-registered">Registered:<br/>{props.user.registered}</span>
             </div>
 
             <div className="post-content">
@@ -45,9 +45,9 @@ export default function PostsListItem(props: {post: Post, user: User}) {
             <div className="post-date">
                 <i>Posted:</i>
                 <br/>
-                {props.post.date.toLocaleString()}
+                {props.post.date}
                 <br/>
-                <span>({dateDiffAsString(props.post.date)} ago)</span>
+                <span>({dateDiffAsString(new Date(props.post.date))} ago)</span>
             </div>
         </li>
     )

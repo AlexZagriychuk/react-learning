@@ -26,7 +26,7 @@ export const getAllUsers = () : Users => {
         {
             id: 1,
             type: UserType.ADMIN,
-            name: "Michael_Scott",
+            name: "Michael_Scott_Best_Admin",
             avatar: "/michael scott.jpg",
             registered: new Date("12/23/2022")
         },

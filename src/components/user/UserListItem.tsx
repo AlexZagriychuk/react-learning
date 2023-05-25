@@ -1,7 +1,5 @@
 import { User } from "./users";
 
-
-
 export default function UserListItem({avatar, name, type, registered}: User ) {
     return (
         <li>

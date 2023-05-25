@@ -22,6 +22,10 @@
     display: flex;
     padding: 0px 5px;
     align-items: center;
+
+    border-radius: 15px;
+    outline: 1px solid rebeccapurple;
+    box-shadow: 1px 1px 5px rebeccapurple;
 }
 
 .nav-bar-user-avatar {

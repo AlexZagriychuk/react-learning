@@ -129,7 +129,7 @@ li.posted-by-current-user .post-content-title::after {
 .post-user-data::after, .post-date::after {
     content: "";
     position: absolute;
-    height: 100vh;
+    height: 200%; /* extra value to cover paddings of the '.posts-list li' */
     width: 1px;
     background-color: lightseagreen;
 

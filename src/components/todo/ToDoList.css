@@ -30,3 +30,10 @@
 .todo-item-finished:hover {
     cursor: pointer;
 }
+
+
+@media screen and (max-width: 630px) {
+	.todo-list {
+        min-width: 100%;
+    }
+}

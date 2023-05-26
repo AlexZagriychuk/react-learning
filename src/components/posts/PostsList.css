@@ -56,6 +56,10 @@ li.posted-by-current-user {
     font-weight: bold;
 }
 
+li.posted-by-current-user .post-user-name {
+    color: rebeccapurple;
+}
+
 .post-user-type {
     width: 100%;
     font-size: 13px;

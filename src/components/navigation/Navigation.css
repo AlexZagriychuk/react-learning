@@ -68,6 +68,7 @@
 .nav-bar-user-select div:hover {
     font-weight: bold;
     background-color: whitesmoke;
+    color: rebeccapurple;
 }
 
 .nav-bar-user-avatar {

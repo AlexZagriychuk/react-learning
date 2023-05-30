@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import "./Navigation.css"
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { currentUserChanged, selectAllUsersNormalized, selectCurrentUserId } from "../../redux/modules/usersSlice";
+import { currentUserChanged, selectAllUsers, selectCurrentUserId, selectCurrentUser } from "../../redux/modules/usersSlice";
 import { useState } from "react";
-import { User } from "../user/users";
+import { User, getUnknownUser } from "../user/users";
 
 export default function Navigation() {
     const dispatch = useAppDispatch()
     const [userSelectionOpened, setUserSelectionOpened] = useState(false)
 
-    const currentUserId = useAppSelector(selectCurrentUserId)
-    const allUsersNormalized = useAppSelector(selectAllUsersNormalized)
-    const currentUser = allUsersNormalized[currentUserId]
+    const allUsers = useAppSelector(selectAllUsers)
+    const currentUserId = useAppSelector(selectCurrentUserId)    
+    const currentUser = useAppSelector(selectCurrentUser) || getUnknownUser()
 
     const handleUserSelectedClick = (selectedUserId: number) => {
         if(currentUserId !== selectedUserId) {
@@ -42,7 +42,7 @@ export default function Navigation() {
                     </div>
 
                     <div className={"nav-bar-user-select" + (userSelectionOpened ? " active" : "")}>
-                        {Object.values(allUsersNormalized).map((user: User) => {
+                        {allUsers.map((user: User) => {
                             return (
                                 <div key={user.id} onClick={() => handleUserSelectedClick(user.id)}>{user.name}</div>
                             )

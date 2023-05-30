@@ -60,3 +60,13 @@ export const getAllUsers = () : Users => {
         usersData
     }
 }
+
+export const getUnknownUser = () : User => {
+    return {
+        id: 0,
+        type: UserType.READER,
+        name: "Unknown",
+        avatar: "/Unknown_person.jpg",
+        registered: "-"
+    }
+}

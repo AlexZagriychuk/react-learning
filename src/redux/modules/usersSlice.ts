@@ -1,30 +1,20 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { User, getAllUsers } from "../../components/user/users";
 
-export interface UsersNormalized {
-    [key: number]: User;
-}
 
-export interface UsersState {
-    activeUserId: number,
-    nextUserId: number,
-    usersNormalized: UsersNormalized
-}
+const usersAdapter = createEntityAdapter<User>({
+    sortComparer: (a, b) => a.id - b.id
+})
 
-const generateInitialState = () : UsersState => {
+const generateInitialState = () => {
     const allUsers = getAllUsers()
 
-    const usersNormalized = allUsers.usersData.reduce((acc, user) => {
-        acc[user.id] = user
-        return acc
-    }, {} as UsersNormalized)
-
-    return {
+    let state = usersAdapter.getInitialState({
         activeUserId: 1,
-        nextUserId: allUsers.nextUserId,
-        usersNormalized
-    }
+        nextUserId: allUsers.nextUserId
+    })
+    return usersAdapter.addMany(state, allUsers.usersData)
 }
 
 export const usersSlice = createSlice({
@@ -38,7 +28,14 @@ export const usersSlice = createSlice({
 })
 
 export const selectCurrentUserId = (state: RootState) => state.users.activeUserId
-export const selectAllUsersNormalized = (state: RootState) => state.users.usersNormalized
+export const selectCurrentUser = (state: RootState) => selectUserById(state, selectCurrentUserId(state))
+
+// Export the customized selectors for this adapter
+export const {
+    selectAll: selectAllUsers,
+    selectById: selectUserById,
+    selectIds: selectUserIds
+} = usersAdapter.getSelectors((state: RootState) => state.users)
 
 export const { currentUserChanged } = usersSlice.actions
 export default usersSlice.reducer

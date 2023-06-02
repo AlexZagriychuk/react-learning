@@ -24,4 +24,27 @@ const dateDiffAsString = (date1: Date, date2 : Date = new Date()) => {
     return `${diffInDaysTotal} day${getDateStrEnding(diffInDaysTotal)}, ${hours} hour${getDateStrEnding(hours)}`
 }
 
-export { dateDiffAsString }
+const getRandomDate = (startDate: Date, endDate: Date) => {
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    const randomTime = Math.random() * timeDiff;
+    const randomDate = new Date(startDate.getTime() + randomTime);
+    return randomDate
+}
+
+// Generate specified number ${count} of random dates in chronological order with a step of 1 hour:
+// - 1st date = between now and now-1 hour; 2nd date = between now-1 hour and now-2 hours and so on... 
+const generateDates = (datesCount: number) : Date[] => {
+    const result = Array(datesCount) as Date[]
+    const oneHourInMs = 1000*3600*1
+    let maxDate = new Date()
+
+    for(let i = 0; i < datesCount; i++) {
+        let minDate = new Date(maxDate.getTime() - oneHourInMs)
+        result[i] = getRandomDate(minDate, maxDate)
+        maxDate = minDate
+    }
+
+    return  result
+}
+
+export { dateDiffAsString, getRandomDate, generateDates }

@@ -18,7 +18,7 @@ export default function PostsListItem(props: {post: Post, user: User}) {
 
             <div className="post-content">
                 <h3 className="post-content-title">{props.post.title}</h3>
-                <div className="post-content-post">{props.post.post}</div>
+                <div className="post-content-post">{props.post.body}</div>
             </div>
 
             <div className="post-date">

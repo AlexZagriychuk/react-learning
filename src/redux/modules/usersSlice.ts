@@ -27,6 +27,7 @@ export const usersSlice = createSlice({
     }
 })
 
+export const selectAllUserEntities = (state: RootState) => state.users.entities
 export const selectCurrentUserId = (state: RootState) => state.users.activeUserId
 export const selectCurrentUser = (state: RootState) => selectUserById(state, selectCurrentUserId(state))
 

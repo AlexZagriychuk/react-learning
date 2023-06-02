@@ -9,7 +9,7 @@ function CounterFunctionalComponent({initialCount} : CounterFunctionalComponentP
 
     return (
         <div>
-            <h2>CounterFunctionalComponent</h2>
+            <h2>CounterFunctionalComponent (useState)</h2>
             <button onClick={() => setCount((count) => count + 1)}>Increment count</button>
             <div>Count is: {count}</div>
         </div>

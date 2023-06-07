@@ -11,7 +11,7 @@ export default function PostsListItem(props: {post: Post, user: User}) {
         <li className={currentUserId === props.post.userId ? "posted-by-current-user" : ""}>
             <div className="post-user-data">
                 <img src={props.user.avatar} alt="" className="post-user-img" />
-                <span className="post-user-name">{props.user.name}</span>
+                <span className="post-user-name">{props.user.username}</span>
                 <span className="post-user-type">({props.user.type})</span>
                 <span className="post-user-registered">Registered:<br/>{props.user.registered}</span>
             </div>

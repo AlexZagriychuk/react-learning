@@ -6,16 +6,16 @@ const getDateStrEnding = (dateMemberValue: number) => {
 // - "x day(s), y hour(s)"
 // - "x hour(s), y minute(s)"
 // - "x minute(s)"
-const dateDiffAsString = (date1: Date, date2 : Date = new Date()) => {
+const dateDiffAsString = (date1: Date, date2: Date = new Date()) => {
     const diffInMinutesTotal = Math.abs(Math.floor((date2.getTime() - date1.getTime()) / 60000))
     const diffInHoursTotal = Math.floor(diffInMinutesTotal / 60)
     const diffInDaysTotal = Math.floor(diffInHoursTotal / 24)
 
-    if(diffInMinutesTotal < 60) {
+    if (diffInMinutesTotal < 60) {
         return `${diffInMinutesTotal} minute${getDateStrEnding(diffInMinutesTotal)}`
     }
 
-    if(diffInHoursTotal < 24) {
+    if (diffInHoursTotal < 24) {
         const minutes = Math.floor(diffInMinutesTotal - diffInHoursTotal * 60)
         return `${diffInHoursTotal} hour${getDateStrEnding(diffInHoursTotal)}, ${minutes} minute${getDateStrEnding(minutes)}`
     }
@@ -31,20 +31,28 @@ const getRandomDate = (startDate: Date, endDate: Date) => {
     return randomDate
 }
 
-// Generate specified number ${count} of random dates in chronological order with a step of 1 hour:
-// - 1st date = between now and now-1 hour; 2nd date = between now-1 hour and now-2 hours and so on... 
-const generateDates = (datesCount: number) : Date[] => {
-    const result = Array(datesCount) as Date[]
-    const oneHourInMs = 1000*3600*1
-    let maxDate = new Date()
+// Generate specified number ${datesToGenerateCount} of random dates in chronological order with the specified step range (1 hour by default):
+// - 1st date = random date between firstDateOfRange and firstDateOfRange-1 hour (if datesRangeStep is default); 
+// - 2nd date = random date between firstDateOfRange-1 hour and firstDateOfRange-2 hours (if datesRangeStep is default);
+// - and so on... 
+const generateDates = (datesToGenerateCount: number, firstDateOfRange: Date = new Date(), datesRangeStepUnit: DateUnit = DateUnit.HOUR, datesRangeStepValue: number = -1): Date[] => {
+    const result = Array(datesToGenerateCount) as Date[]
+    const dateStepRangeInMs = datesRangeStepUnit * datesRangeStepValue
 
-    for(let i = 0; i < datesCount; i++) {
-        let minDate = new Date(maxDate.getTime() - oneHourInMs)
-        result[i] = getRandomDate(minDate, maxDate)
-        maxDate = minDate
+    for (let i = 0; i < datesToGenerateCount; i++) {
+        let secondDateOfRange = new Date(firstDateOfRange.getTime() + dateStepRangeInMs)
+        result[i] = getRandomDate(secondDateOfRange, firstDateOfRange)
+        firstDateOfRange = secondDateOfRange
     }
 
-    return  result
+    return result
 }
 
-export { dateDiffAsString, getRandomDate, generateDates }
+enum DateUnit {
+    SECOND = 1000,
+    MINUTE = 1000 * 60,
+    HOUR = 1000 * 60 * 60,
+    DAY = 1000 * 60 * 60 * 24
+}
+
+export { dateDiffAsString, getRandomDate, generateDates, DateUnit }

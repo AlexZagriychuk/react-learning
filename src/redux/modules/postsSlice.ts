@@ -1,25 +1,31 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Post } from "../../components/posts/posts";
+import { createSlice } from "@reduxjs/toolkit";
+import { Post, getNextPostId } from "../../components/posts/posts";
 import { RootState } from "../store";
 import { generateDates } from "../../utils/DateUtils";
+import { apiSlice } from "./apiSlice";
 
-export const getPosts = createAsyncThunk(
-    'posts/getPosts',
-    async () => {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts")
-        const posts = await response.json() as Array<Post> 
-        const postsLength = posts.length
 
-        // Generate fake post dates (API does not have this field, but our App has)
-        const generatedDates = generateDates(postsLength)
-        posts.forEach((post, index) => {post.date = generatedDates[postsLength - index - 1].toLocaleString()})
+export const extendedApiSlice = apiSlice.injectEndpoints({
+    endpoints: builder => ({
+        getPosts: builder.query({
+            query: () => '/posts',
+            transformResponse: (responseData: Post[]) => {
+                const postsLength = responseData.length
 
-        return posts
-    }
-)
+                // Generate fake post dates (API does not have this field, but our App has)
+                const generatedDates = generateDates(postsLength)
+                responseData.forEach((post, index) => {post.date = generatedDates[postsLength - index - 1].toLocaleString()})
+        
+                return responseData
+            }
+        })
+    })
+})
+
+export const { useGetPostsQuery } = extendedApiSlice
+
 
 const initialState = {
-    loading: false,
     nextPostId: 1,
     postsData: [] as Array<Post>
 }
@@ -33,23 +39,16 @@ export const postsSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getPosts.pending, (state) => {
-            state.loading = true
-        }),
-        builder.addCase(getPosts.fulfilled, (state, action) => {
-            state.loading = false
-            state.postsData = action.payload
-        }),
-        builder.addCase(getPosts.rejected, (state) => {
-            state.loading = false
+        builder.addMatcher(extendedApiSlice.endpoints.getPosts.matchFulfilled, (state, action) => {
+            const postsData = action.payload
+            state.postsData = postsData
+            state.nextPostId = getNextPostId(postsData)
         })
     }
 })
 
 export const selectNextPostId = (state: RootState) => state.posts.nextPostId
 export const selectPosts = (state: RootState) => state.posts.postsData
-export const selectLoading = (state: RootState) => state.posts.loading
-
 
 export const { postAdded } = postsSlice.actions
 export default postsSlice.reducer

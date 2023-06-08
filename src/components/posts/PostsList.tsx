@@ -1,6 +1,5 @@
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { getPosts, selectLoading, selectPosts } from "../../redux/modules/postsSlice"
+import { useAppSelector } from "../../redux/hooks"
+import { selectPosts, useGetPostsQuery } from "../../redux/modules/postsSlice"
 import { selectAllUserEntities } from "../../redux/modules/usersSlice"
 import { getUnknownUser } from "../user/users"
 import "./PostsList.css"
@@ -8,10 +7,9 @@ import PostsListItem from "./PostsListItem"
 import { Post } from "./posts"
 
 export default function PostsList() {
-    const dispatch = useAppDispatch()
+    const { isLoading, isSuccess, isError, error } = useGetPostsQuery("")
     
     const posts = useAppSelector(selectPosts)
-    const loading = useAppSelector(selectLoading)
     const userEntities = useAppSelector(selectAllUserEntities)
 
     const getPostsListItemsReversed = (posts: Post[]) => {
@@ -25,20 +23,21 @@ export default function PostsList() {
         return res 
     }
 
-
-    useEffect(() => {
-        dispatch(getPosts())
-    }, [])
+    let content
+    if (isLoading) {
+        content = <div>Loading...</div>
+    } else if (isSuccess) {
+        content = <ul className="posts-list">
+            {getPostsListItemsReversed(posts)}
+        </ul>
+    } else if (isError) {
+        content = <div>{error.toString()}</div>
+    }
 
     return (
         <>
             <h2>Posts:</h2>
-            {loading
-                ? <p>Loading...</p>
-                : (<ul className="posts-list">
-                    {getPostsListItemsReversed(posts)}
-                </ul>)
-            }
+            {content}
         </>
     )
 }

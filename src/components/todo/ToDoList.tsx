@@ -14,7 +14,8 @@ export default function ToDoList() {
         dispatch(toDoDataFetched(jsonData))
         return jsonData
     }
-    const { error, isLoading} = useQuery({queryKey: ["todos"], queryFn: fetchTodos})
+    // staleTime: Infinity to not re-fetch data on every "todos" tab reopen
+    const { error, isLoading} = useQuery({queryKey: ["todos"], queryFn: fetchTodos, staleTime: Infinity})
 
     const currentUserId = useAppSelector(selectCurrentUserId)
     const toDoDataForCurrentUser = useAppSelector(state => selectAllToDoByUserId(state.todo, currentUserId))

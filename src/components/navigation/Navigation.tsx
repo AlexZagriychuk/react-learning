@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Navigation.css"
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { currentUserChanged, selectCurrentUserId, selectCurrentUser, useGetUsersQuery } from "../../redux/modules/usersSlice";
+import { currentUserChanged, selectCurrentUserId, selectCurrentUser, useGetUsersQuery, selectAllUsers } from "../../redux/modules/usersSlice";
 import { useEffect, useState } from "react";
 import { User, getUnknownUser } from "../user/users";
 
@@ -9,7 +9,9 @@ export default function Navigation() {
     const dispatch = useAppDispatch()
     const [userSelectionOpened, setUserSelectionOpened] = useState(false)
 
-    const { data: allUsers, isLoading: isLoadingUsers, isSuccess: isSuccessUsers, isError: isErrorUsers, error: errorUsers } = useGetUsersQuery("")
+    const { isLoading: isLoadingUsers, isSuccess: isSuccessUsers, isError: isErrorUsers, error: errorUsers } = useGetUsersQuery("")
+
+    const allUsers = useAppSelector(selectAllUsers)
     const currentUserId = useAppSelector(selectCurrentUserId)
     const currentUser = useAppSelector(selectCurrentUser) || getUnknownUser()
 
@@ -22,10 +24,7 @@ export default function Navigation() {
     useEffect(() => {
         if(currentUserId === 0) {
             // Get min user id or -1
-            const userIds : number[] = allUsers?.ids.map(id => {
-                if(typeof id === 'string') return parseInt(id)
-                return id 
-            }) || [-1]
+            const userIds : number[] = allUsers.map(user => user.id) || [-1]
             let minUserId = Math.min(...userIds)
         
             if(minUserId !== -1) {
@@ -39,11 +38,14 @@ export default function Navigation() {
     if (isLoadingUsers) {
         usersListContent = <div>Loading...</div>
     } else if (isSuccessUsers) {
-        usersListContent = allUsers.ids.map(id => {
-            let user = allUsers.entities[id] as User
-            return (
-                <div key={user.id} onClick={() => handleUserSelectedClick(user.id)}>{user.name}</div>
-            )
+        // usersListContent = allUsers.ids.map(id => {
+        //     let user = allUsers.entities[id] as User
+        //     return (
+        //         <div key={user.id} onClick={() => handleUserSelectedClick(user.id)}>{user.name}</div>
+        //     )
+        // })
+        usersListContent = allUsers.map((user: User) => {
+            return <div key={user.id} onClick={() => handleUserSelectedClick(user.id)}>{user.name}</div>
         })
     } else if (isErrorUsers) {
         usersListContent = <div>{errorUsers.toString()}</div>

@@ -1,18 +1,18 @@
 import "./UsersList.css"
-import { useGetUsersQuery } from "../../redux/modules/usersSlice"
+import { selectAllUsers, useGetUsersQuery } from "../../redux/modules/usersSlice"
 import UserListItem from "./UserListItem"
-import { User } from "./users"
+import { useAppSelector } from "../../redux/hooks"
 
 export default function UserList() {
-    const { data: allUsers, isLoading, isSuccess, isError, error } = useGetUsersQuery("")
+    const { isLoading, isSuccess, isError, error } = useGetUsersQuery("")
+    const allUsers = useAppSelector(selectAllUsers)
 
     let content
     if (isLoading) {
         content = <div>Loading...</div>
     } else if (isSuccess) {
         content = <ul className="users-list">
-            {allUsers.ids.map(id => {
-                let user = allUsers.entities[id] as User
+            {allUsers.map(user => {
                 return <UserListItem key={user.id} {...user} />
             })}
         </ul>

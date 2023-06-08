@@ -9,9 +9,7 @@ import PostsList from './components/posts/PostsList.tsx'
 import ToDoList from './components/todo/ToDoList.tsx'
 import UserList from './components/user/UserList.tsx'
 import Root from './routes/root.tsx'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -42,9 +40,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 )

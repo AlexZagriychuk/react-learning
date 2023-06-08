@@ -1,28 +1,19 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { selectAllToDoByUserId, toDoCompletionToggled, toDoDataFetched } from "../../redux/modules/todoSlice"
+import { selectAllToDoByUserId, toDoCompletionToggled, useGetTodosQuery } from "../../redux/modules/todoSlice"
 import { selectCurrentUserId } from "../../redux/modules/usersSlice"
 import "./ToDoList.css"
 import { ToDoItem } from "./todo"
-import { useQuery } from '@tanstack/react-query';
 
 export default function ToDoList() {
+    const {isLoading, isError, error } = useGetTodosQuery("")
+    
     const dispatch = useAppDispatch()
-
-    const fetchTodos = async () => {
-        const response = await fetch("https://jsonplaceholder.typicode.com/todos")
-        const jsonData = await response.json()
-        dispatch(toDoDataFetched(jsonData))
-        return jsonData
-    }
-    // staleTime: Infinity to not re-fetch data on every "todos" tab reopen
-    const { error, isLoading} = useQuery({queryKey: ["todos"], queryFn: fetchTodos, staleTime: Infinity})
-
     const currentUserId = useAppSelector(selectCurrentUserId)
-    const toDoDataForCurrentUser = useAppSelector(state => selectAllToDoByUserId(state.todo, currentUserId))
+    const toDoDataForCurrentUser = useAppSelector(state => selectAllToDoByUserId(state, currentUserId))
     const noToDoDataAvailable = !toDoDataForCurrentUser || (Array.isArray(toDoDataForCurrentUser) && toDoDataForCurrentUser.length === 0)
 
     let content
-    if (error) {
+    if (isError) {
         content = "An error has occurred: " + error
     } else if (isLoading) {
         content = <p>Loading...</p>

@@ -1,5 +1,5 @@
 import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { ToDoItem, getAllToDoData, getNextToDoId } from "../../components/todo/todo";
+import { ToDoItem, getNextToDoId } from "../../components/todo/todo";
 
 
 export interface UserWithToDo {
@@ -15,40 +15,45 @@ interface TodosState {
 const usersWithToDoAdapter = createEntityAdapter<UserWithToDo>();
 const toDoAdapter = createEntityAdapter<ToDoItem>();
 
-const generateInitialState = () : TodosState => {
-    const toDoData = getAllToDoData()
-    const nextToDoId = getNextToDoId(toDoData)
-
-    const usersWithToDoGroupedByUserId = toDoData.reduce((acc, currToDo) => {
-        let userId = currToDo.userId
-        let userWithToDo = acc[userId] 
-        if(!userWithToDo) {
-            userWithToDo = {id: userId, toDoIds: []}
-            acc[userId] = userWithToDo
-        }
-
-        userWithToDo.toDoIds.push(currToDo.id)
-
-        return acc
-    }, {} as {[key: number]: UserWithToDo})
-
-    let usersWithToDoAdapterState = usersWithToDoAdapter.getInitialState()
-    usersWithToDoAdapterState = usersWithToDoAdapter.addMany(usersWithToDoAdapterState, Object.values(usersWithToDoGroupedByUserId))
-    let toDoAdapterState = toDoAdapter.getInitialState()
-    toDoAdapterState = toDoAdapter.addMany(toDoAdapterState, toDoData)
-
-    return {
-        users: usersWithToDoAdapterState,
-        todos: toDoAdapterState,
-        nextToDoId
-    }
+const initialState =  {
+    users: usersWithToDoAdapter.getInitialState(),
+    todos: toDoAdapter.getInitialState(),
+    nextToDoId: 1
 }
 
 
 export const todoSlice = createSlice({
     name: "todo",
-    initialState: generateInitialState(),
+    initialState,
     reducers: {
+        toDoDataFetched: function(state, action: PayloadAction<ToDoItem[]>) {
+            const toDoData = action.payload
+            const nextToDoId = getNextToDoId(toDoData)
+        
+            const usersWithToDoGroupedByUserId = toDoData.reduce((acc, currToDo) => {
+                let userId = currToDo.userId
+                let userWithToDo = acc[userId]
+                if(!userWithToDo) {
+                    userWithToDo = {id: userId, toDoIds: []}
+                    acc[userId] = userWithToDo
+                }
+        
+                userWithToDo.toDoIds.push(currToDo.id)
+        
+                return acc
+            }, {} as {[key: number]: UserWithToDo})
+        
+            let usersWithToDoAdapterState = usersWithToDoAdapter.getInitialState()
+            usersWithToDoAdapterState = usersWithToDoAdapter.setMany(usersWithToDoAdapterState, Object.values(usersWithToDoGroupedByUserId))
+            let toDoAdapterState = toDoAdapter.getInitialState()
+            toDoAdapterState = toDoAdapter.setMany(toDoAdapterState, toDoData)
+        
+            return {
+                users: usersWithToDoAdapterState,
+                todos: toDoAdapterState,
+                nextToDoId
+            }
+        },
         toDoCompletionToggled: function(state, action: PayloadAction<number>) {
             const toDoItem = selectToDoById(state, action.payload)
             if(!toDoItem) {
@@ -79,5 +84,5 @@ export const selectAllToDoByUserId = (state: TodosState, userId: number): Array<
     return postIds.toDoIds.map(toDoId => selectToDoById(state, toDoId) as ToDoItem)
 }
 
-export const { toDoCompletionToggled } = todoSlice.actions
+export const { toDoDataFetched, toDoCompletionToggled } = todoSlice.actions
 export default todoSlice.reducer

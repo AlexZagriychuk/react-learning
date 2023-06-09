@@ -1,6 +1,21 @@
 import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { ToDoItem, getAllToDoData, getNextToDoId } from "../../components/todo/todo";
+import { ToDoItem, getNextToDoId } from "../../components/todo/todo";
+import { apiSlice } from "./apiSlice";
+import { RootState } from "../store";
 
+
+export const extendedApiSlice = apiSlice.injectEndpoints({
+    endpoints: builder => ({
+        getTodos: builder.query({
+            query: () => '/todos',
+            transformResponse: (responseData: []) => {
+                return responseData as ToDoItem[]
+            }
+        })
+    })
+})
+
+export const { useGetTodosQuery } = extendedApiSlice
 
 export interface UserWithToDo {
     id: EntityId;
@@ -15,13 +30,18 @@ interface TodosState {
 const usersWithToDoAdapter = createEntityAdapter<UserWithToDo>();
 const toDoAdapter = createEntityAdapter<ToDoItem>();
 
-const generateInitialState = () : TodosState => {
-    const toDoData = getAllToDoData()
+const initialState : TodosState =  {
+    users: usersWithToDoAdapter.getInitialState(),
+    todos: toDoAdapter.getInitialState(),
+    nextToDoId: 1
+}
+
+const normalizeTodoData = (toDoData : ToDoItem[]) => {
     const nextToDoId = getNextToDoId(toDoData)
 
-    const usersWithToDoGroupedByUserId = toDoData.reduce((acc, currToDo) => {
+    const usersWithToDoGroupedByUserId = toDoData.reduce((acc, currToDo : ToDoItem) => {
         let userId = currToDo.userId
-        let userWithToDo = acc[userId] 
+        let userWithToDo = acc[userId]
         if(!userWithToDo) {
             userWithToDo = {id: userId, toDoIds: []}
             acc[userId] = userWithToDo
@@ -33,9 +53,9 @@ const generateInitialState = () : TodosState => {
     }, {} as {[key: number]: UserWithToDo})
 
     let usersWithToDoAdapterState = usersWithToDoAdapter.getInitialState()
-    usersWithToDoAdapterState = usersWithToDoAdapter.addMany(usersWithToDoAdapterState, Object.values(usersWithToDoGroupedByUserId))
+    usersWithToDoAdapterState = usersWithToDoAdapter.setMany(usersWithToDoAdapterState, Object.values(usersWithToDoGroupedByUserId))
     let toDoAdapterState = toDoAdapter.getInitialState()
-    toDoAdapterState = toDoAdapter.addMany(toDoAdapterState, toDoData)
+    toDoAdapterState = toDoAdapter.setMany(toDoAdapterState, toDoData)
 
     return {
         users: usersWithToDoAdapterState,
@@ -47,30 +67,38 @@ const generateInitialState = () : TodosState => {
 
 export const todoSlice = createSlice({
     name: "todo",
-    initialState: generateInitialState(),
+    initialState,
     reducers: {
         toDoCompletionToggled: function(state, action: PayloadAction<number>) {
-            const toDoItem = selectToDoById(state, action.payload)
+            const toDoId = action.payload
+            const toDoItem = state.todos.entities[toDoId]
+
             if(!toDoItem) {
-                console.error(`Cannot perform action toDoCompletionToggled, because todo with id ${action.payload} has not been found in the Redux state`)
+                console.error(`Cannot perform action toDoCompletionToggled, because todo with id ${toDoId} has not been found in the Redux state`)
                 return
             }
 
-            toDoAdapter.updateOne(state.todos, { id: action.payload, changes: { completed: !toDoItem.completed } })
+            toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: !toDoItem.completed } })
         }
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(extendedApiSlice.endpoints.getTodos.matchFulfilled, (state, action) => {
+            return normalizeTodoData(action.payload)
+        })
     }
 })
 
 export const {
     selectIds: selectIdsOfUsersWithPosts,
     selectById: selectPostIdsByUserId
-} = usersWithToDoAdapter.getSelectors((state: TodosState) => state.users);
+} = usersWithToDoAdapter.getSelectors((state: RootState) => state.todo.users);
   
 export const { 
     selectById: selectToDoById,
-} = toDoAdapter.getSelectors((state: TodosState) => state.todos);
+} = toDoAdapter.getSelectors((state: RootState) => state.todo.todos);
 
-export const selectAllToDoByUserId = (state: TodosState, userId: number): Array<ToDoItem> => {
+
+export const selectAllToDoByUserId = (state: RootState, userId: number): Array<ToDoItem> => {
     const postIds = selectPostIdsByUserId(state, userId)
     if(!postIds) {
         return []

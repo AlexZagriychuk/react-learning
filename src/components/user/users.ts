@@ -28,7 +28,7 @@ export const getUnknownUser = () : User => {
         type: UserType.READER,
         name: "Unknown",
         username: "Unknown",
-        avatar: "/Unknown_person.jpg",
+        avatar: "/react/Unknown_person.jpg",
         registered: "-"
     }
 }

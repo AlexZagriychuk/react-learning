@@ -38,7 +38,7 @@ const processGetUsersApiResponse = (usersApiResponseData: []): User[] => {
                 type: UserType.ADMIN,
                 name: "Michael Scott",
                 username: "Michael_Scott_Best_Admin",
-                avatar: "/michael scott.jpg",
+                avatar: "/react/michael scott.jpg",
                 registered: fakeRegistrationDates[usersCount - 1].toLocaleDateString()
             } as User
         } else {

@@ -75,7 +75,7 @@ export const usersSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addMatcher(extendedApiSlice.endpoints.getUsers.matchFulfilled, (state, action) => {
+        builder.addMatcher(extendedApiSlice.endpoints.getUsers.matchFulfilled, (_state, action) => {
             return usersAdapter.setAll(initialState, action.payload)
         })
     }

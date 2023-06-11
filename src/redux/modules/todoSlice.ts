@@ -82,7 +82,7 @@ export const todoSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addMatcher(extendedApiSlice.endpoints.getTodos.matchFulfilled, (state, action) => {
+        builder.addMatcher(extendedApiSlice.endpoints.getTodos.matchFulfilled, (_state, action) => {
             return normalizeTodoData(action.payload)
         })
     }

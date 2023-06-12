@@ -1,11 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { selectAllToDoByUserId, toDoCompletionToggled, selectToDoApiError, toDoApiErrorClosed, useGetTodosQuery } from "../../redux/modules/todoSlice"
+import { selectAllToDoByUserId, selectToDoApiError, toDoApiErrorClosed, useGetTodosQuery, useUpdateTodoMutation } from "../../redux/modules/todoSlice"
 import { selectCurrentUserId } from "../../redux/modules/usersSlice"
 import "./ToDoList.css"
 import { ToDoItem } from "./todo"
 
 export default function ToDoList() {
-    const {isLoading, isError, error } = useGetTodosQuery("")
+    const {isLoading, isError, error } = useGetTodosQuery(undefined)
+    const [updateTodo] = useUpdateTodoMutation()
 
     const dispatch = useAppDispatch()
     const currentUserId = useAppSelector(selectCurrentUserId)
@@ -27,7 +28,8 @@ export default function ToDoList() {
                         <li key={toDoItem.id}>
                             <div className={"todo-item-text" + (toDoItem.completed ? " completed" : "")}>{toDoItem.title}</div>
                             <input className="todo-item-finished" type="checkbox" checked={ toDoItem.completed } onChange={() => {
-                                dispatch(toDoCompletionToggled(toDoItem.id))
+                                const toDoItemUpdated = {...toDoItem, completed: !toDoItem.completed}
+                                updateTodo(toDoItemUpdated)
                             }} />
                         </li>
                     )

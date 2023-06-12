@@ -23,18 +23,21 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     body,
                 }
             },
-            async onQueryStarted(toDoItem: ToDoItem, { dispatch, queryFulfilled }) {
+            async onQueryStarted(toDoItemChanged: ToDoItem, { dispatch, queryFulfilled }) {
                 // Optimistic update
-                dispatch(toDoCompletionToggled(toDoItem.id))
-
+                let toDoItemBeforeMutation
+                
                 const queryDataChangeAction = dispatch(
                     extendedApiSlice.util.updateQueryData('getTodos', undefined, (draft) => {
-                        const draftItem = draft.find(draftItem => draftItem.id === toDoItem.id) as MaybeDrafted<ToDoItem>
-                        draftItem.completed = toDoItem.completed
+                        const draftItem = draft.find(draftItem => draftItem.id === toDoItemChanged.id) as MaybeDrafted<ToDoItem>
+                        toDoItemBeforeMutation = {...draftItem} as ToDoItem
+                        draftItem.completed = toDoItemChanged.completed
                         return draft
                     })
                 )
-               
+
+                toDoItemBeforeMutation = toDoItemBeforeMutation as unknown as ToDoItem
+
                 try {
                     await queryFulfilled
                 } catch(e : any) {
@@ -44,7 +47,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     dispatch(toDoApiErrorCaught(errorMessage))
 
                     queryDataChangeAction.undo()
-                    dispatch(toDoCompletionToggled(toDoItem.id))
+                    dispatch(toDoCompletionChanged({toDoId: toDoItemBeforeMutation.id, completed: toDoItemBeforeMutation.completed}))
                 }
             },
         }),
@@ -119,6 +122,11 @@ export const todoSlice = createSlice({
 
             toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: !toDoItem.completed } })
         },
+        toDoCompletionChanged: function(state, action: PayloadAction<{ toDoId: number, completed: boolean }>) {
+            const toDoId = action.payload.toDoId
+            const newCompleted = action.payload.completed
+            toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: newCompleted } })
+        },
         toDoApiErrorCaught: function(state, action: PayloadAction<string>) {
             state.apiError = action.payload
         },
@@ -154,5 +162,5 @@ export const selectAllToDoByUserId = (state: RootState, userId: number): Array<T
 
 export const selectToDoApiError = (state: RootState) => state.todo.apiError
 
-export const { toDoCompletionToggled, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
+export const { toDoCompletionToggled, toDoCompletionChanged, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
 export default todoSlice.reducer

@@ -24,7 +24,8 @@ export interface UserWithToDo {
 interface TodosState {
     users: EntityState<UserWithToDo>;
     todos: EntityState<ToDoItem>;
-    nextToDoId: number
+    nextToDoId: number,
+    apiError: string,
 }
 
 const usersWithToDoAdapter = createEntityAdapter<UserWithToDo>();
@@ -33,7 +34,8 @@ const toDoAdapter = createEntityAdapter<ToDoItem>();
 const initialState : TodosState =  {
     users: usersWithToDoAdapter.getInitialState(),
     todos: toDoAdapter.getInitialState(),
-    nextToDoId: 1
+    nextToDoId: 1,
+    apiError: "",
 }
 
 const normalizeTodoData = (toDoData : ToDoItem[]) => {
@@ -60,7 +62,8 @@ const normalizeTodoData = (toDoData : ToDoItem[]) => {
     return {
         users: usersWithToDoAdapterState,
         todos: toDoAdapterState,
-        nextToDoId
+        nextToDoId,
+        apiError: "",
     }
 }
 
@@ -79,6 +82,14 @@ export const todoSlice = createSlice({
             }
 
             toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: !toDoItem.completed } })
+        },
+        toDoApiErrorCaught: function(state, action: PayloadAction<string>) {
+            console.log("toDoApiErrorCaught")
+            state.apiError = action.payload
+        },
+        toDoApiErrorClosed: function(state) {
+            console.log("toDoApiErrorClosed")
+            state.apiError = ""
         }
     },
     extraReducers: (builder) => {
@@ -107,5 +118,7 @@ export const selectAllToDoByUserId = (state: RootState, userId: number): Array<T
     return postIds.toDoIds.map(toDoId => selectToDoById(state, toDoId) as ToDoItem)
 }
 
-export const { toDoCompletionToggled } = todoSlice.actions
+export const selectToDoApiError = (state: RootState) => state.todo.apiError
+
+export const { toDoCompletionToggled, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
 export default todoSlice.reducer

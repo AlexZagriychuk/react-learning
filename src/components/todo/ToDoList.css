@@ -1,3 +1,40 @@
+.todo-api-error {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    color: red;
+}
+
+#todo-api-error-close-btn {
+    flex-shrink: 0;
+    color: inherit;
+    background-color: transparent;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+#todo-api-error-close-btn::before, #todo-api-error-close-btn::after {
+    position: absolute;
+    content: "";
+    background-color: red;
+    height: 3px;
+    width: 100%;
+    left: 0%;
+    top: 50%;
+}
+#todo-api-error-close-btn::before {
+    transform: rotate(45deg);
+}
+#todo-api-error-close-btn::after {
+    transform: rotate(-45deg);
+}
+
 .todo-list {
     margin: 0 auto;
     padding: 0 0;

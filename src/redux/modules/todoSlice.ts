@@ -17,8 +17,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query(data) {
                 const { id, ...body } = data
 
+                // ToDo: remove TMP intentional API failure
                 return {
-                    url: `/todos/${id}`,
+                    url: `/todos/${9999}`,
                     method: 'PUT',
                     body,
                 }

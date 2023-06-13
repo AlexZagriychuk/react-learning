@@ -1,4 +1,4 @@
-import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
 import { ToDoItem, getNextToDoId } from "../../components/todo/todo";
 import { apiSlice } from "./apiSlice";
 import { RootState } from "../store";
@@ -17,9 +17,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query(data) {
                 const { id, ...body } = data
 
-                // ToDo: remove TMP intentional API failure
                 return {
-                    url: `/todos/${9999}`,
+                    url: `/todos/${id}`,
                     method: 'PUT',
                     body,
                 }
@@ -162,6 +161,12 @@ export const selectAllToDoByUserId = (state: RootState, userId: number): Array<T
 }
 
 export const selectToDoApiError = (state: RootState) => state.todo.apiError
+
+export const selectToDoApiData = extendedApiSlice.endpoints.getTodos.select(undefined)
+export const selectAllToDosFromApi = createSelector(
+    selectToDoApiData,
+    todos => todos?.data ?? [] as ToDoItem[]
+)
 
 export const { toDoCompletionToggled, toDoCompletionChanged, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
 export default todoSlice.reducer

@@ -1,19 +1,20 @@
 import { useCallback } from "react";
-import { toDoCompletionToggled, useUpdateTodoMutation } from "../../redux/modules/todoSlice";
+import { selectAllToDosFromApi, toDoCompletionToggled, useUpdateTodoMutation } from "../../redux/modules/todoSlice";
 import { ToDoItem } from "./todo";
 import { debounce } from "ts-debounce";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ToDoListItem({toDoItem} : {toDoItem: ToDoItem}) {
     const [updateTodo] = useUpdateTodoMutation()
     const dispatch = useAppDispatch()
-    const updateTodoDebounced = useCallback(debounce((toDoItemUpdated: ToDoItem) => {
-        // Only fire API mutation if previous and updated versions are not the equal
-        // ToDo: add logic to get toDoItemBeforeApiMutation from the API response state
-        const toDoItemBeforeApiMutation = {}
-        const objectsEqual = JSON.stringify(toDoItemBeforeApiMutation) === JSON.stringify(toDoItemUpdated)
+    const toDoItemsBeforeApiMutations = useAppSelector(selectAllToDosFromApi)
 
-        if(!objectsEqual) {
+    const updateTodoDebounced = useCallback(debounce((toDoItemUpdated: ToDoItem, toDoItemsBeforeApiMutations: ToDoItem[]) => {    
+        // Only fire API mutation if previous and updated ToDo versions are not the equal
+        const toDoItemBeforeApiMutation = toDoItemsBeforeApiMutations.find(todo => todo.id === toDoItemUpdated.id) as ToDoItem
+        const toDoItemHasChanges = JSON.stringify(toDoItemBeforeApiMutation) !== JSON.stringify(toDoItemUpdated)
+
+        if(toDoItemHasChanges) {
             updateTodo(toDoItemUpdated)
         }
     }, 1000), []);
@@ -23,8 +24,9 @@ export default function ToDoListItem({toDoItem} : {toDoItem: ToDoItem}) {
         dispatch(toDoCompletionToggled(toDoItem.id))
 
         const toDoItemUpdated = {...toDoItem, completed: !toDoItem.completed}
-        updateTodoDebounced(toDoItemUpdated)
+        updateTodoDebounced(toDoItemUpdated, toDoItemsBeforeApiMutations)
     }
+
     return (
         <li>
             <div className={"todo-item-text" + (toDoItem.completed ? " completed" : "")}>{toDoItem.title}</div>

@@ -24,7 +24,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
             async onQueryStarted(toDoItemChanged: ToDoItem, { dispatch, queryFulfilled }) {
-                // Optimistic update
+                // Optimistic state update
+                dispatch(toDoCompletionToggled(toDoItemChanged.id))
+                
                 let toDoItemBeforeMutation
                 
                 const queryDataChangeAction = dispatch(
@@ -47,7 +49,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     dispatch(toDoApiErrorCaught(errorMessage))
 
                     queryDataChangeAction.undo()
-                    dispatch(toDoCompletionChanged({toDoId: toDoItemBeforeMutation.id, completed: toDoItemBeforeMutation.completed}))
+                    dispatch(toDoCompletionToggled(toDoItemChanged.id))
                 }
             },
         }),
@@ -122,11 +124,6 @@ export const todoSlice = createSlice({
 
             toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: !toDoItem.completed } })
         },
-        toDoCompletionChanged: function(state, action: PayloadAction<{ toDoId: number, completed: boolean }>) {
-            const toDoId = action.payload.toDoId
-            const newCompleted = action.payload.completed
-            toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: newCompleted } })
-        },
         toDoApiErrorCaught: function(state, action: PayloadAction<string>) {
             state.apiError = action.payload
         },
@@ -168,5 +165,5 @@ export const selectAllToDosFromApi = createSelector(
     todos => todos?.data ?? [] as ToDoItem[]
 )
 
-export const { toDoCompletionToggled, toDoCompletionChanged, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
+export const { toDoCompletionToggled, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
 export default todoSlice.reducer

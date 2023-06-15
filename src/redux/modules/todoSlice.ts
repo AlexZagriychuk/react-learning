@@ -1,7 +1,8 @@
-import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
 import { ToDoItem, getNextToDoId } from "../../components/todo/todo";
 import { apiSlice } from "./apiSlice";
 import { RootState } from "../store";
+import { MaybeDrafted } from "@reduxjs/toolkit/dist/query/core/buildThunks";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -11,11 +12,51 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             transformResponse: (responseData: []) => {
                 return responseData as ToDoItem[]
             }
-        })
+        }),
+        updateTodo: builder.mutation<ToDoItem, Partial<ToDoItem>>({
+            query(data) {
+                const { id, ...body } = data
+
+                return {
+                    url: `/todos/${id}`,
+                    method: 'PUT',
+                    body,
+                }
+            },
+            async onQueryStarted(toDoItemChanged: ToDoItem, { dispatch, queryFulfilled }) {
+                // Optimistic state update
+                dispatch(toDoCompletionToggled(toDoItemChanged.id))
+                
+                let toDoItemBeforeMutation
+                
+                const queryDataChangeAction = dispatch(
+                    extendedApiSlice.util.updateQueryData('getTodos', undefined, (draft) => {
+                        const draftItem = draft.find(draftItem => draftItem.id === toDoItemChanged.id) as MaybeDrafted<ToDoItem>
+                        toDoItemBeforeMutation = {...draftItem} as ToDoItem
+                        draftItem.completed = toDoItemChanged.completed
+                        return draft
+                    })
+                )
+
+                toDoItemBeforeMutation = toDoItemBeforeMutation as unknown as ToDoItem
+
+                try {
+                    await queryFulfilled
+                } catch(e : any) {
+                    // Undo state updates on API error
+                    const error = e.error
+                    const errorMessage = `Could not update todo via API. ${error.error} (${error.originalStatus} - ${error.status})`
+                    dispatch(toDoApiErrorCaught(errorMessage))
+
+                    queryDataChangeAction.undo()
+                    dispatch(toDoCompletionToggled(toDoItemChanged.id))
+                }
+            },
+        }),
     })
 })
 
-export const { useGetTodosQuery } = extendedApiSlice
+export const { useGetTodosQuery, useUpdateTodoMutation } = extendedApiSlice
 
 export interface UserWithToDo {
     id: EntityId;
@@ -24,7 +65,8 @@ export interface UserWithToDo {
 interface TodosState {
     users: EntityState<UserWithToDo>;
     todos: EntityState<ToDoItem>;
-    nextToDoId: number
+    nextToDoId: number,
+    apiError: string,
 }
 
 const usersWithToDoAdapter = createEntityAdapter<UserWithToDo>();
@@ -33,7 +75,8 @@ const toDoAdapter = createEntityAdapter<ToDoItem>();
 const initialState : TodosState =  {
     users: usersWithToDoAdapter.getInitialState(),
     todos: toDoAdapter.getInitialState(),
-    nextToDoId: 1
+    nextToDoId: 1,
+    apiError: "",
 }
 
 const normalizeTodoData = (toDoData : ToDoItem[]) => {
@@ -60,7 +103,8 @@ const normalizeTodoData = (toDoData : ToDoItem[]) => {
     return {
         users: usersWithToDoAdapterState,
         todos: toDoAdapterState,
-        nextToDoId
+        nextToDoId,
+        apiError: "",
     }
 }
 
@@ -79,6 +123,12 @@ export const todoSlice = createSlice({
             }
 
             toDoAdapter.updateOne(state.todos, { id: toDoId, changes: { completed: !toDoItem.completed } })
+        },
+        toDoApiErrorCaught: function(state, action: PayloadAction<string>) {
+            state.apiError = action.payload
+        },
+        toDoApiErrorClosed: function(state) {
+            state.apiError = ""
         }
     },
     extraReducers: (builder) => {
@@ -107,5 +157,13 @@ export const selectAllToDoByUserId = (state: RootState, userId: number): Array<T
     return postIds.toDoIds.map(toDoId => selectToDoById(state, toDoId) as ToDoItem)
 }
 
-export const { toDoCompletionToggled } = todoSlice.actions
+export const selectToDoApiError = (state: RootState) => state.todo.apiError
+
+export const selectToDoApiData = extendedApiSlice.endpoints.getTodos.select(undefined)
+export const selectAllToDosFromApi = createSelector(
+    selectToDoApiData,
+    todos => todos?.data ?? [] as ToDoItem[]
+)
+
+export const { toDoCompletionToggled, toDoApiErrorClosed, toDoApiErrorCaught } = todoSlice.actions
 export default todoSlice.reducer

@@ -172,6 +172,7 @@ li.posted-by-current-user .post-content-title::after {
 
 .post-content-title-input:focus, .post-content-body-input:focus {
     outline-color: rgb(51, 153, 131);
+    background-color: white;
 }
 
 @keyframes spinner {

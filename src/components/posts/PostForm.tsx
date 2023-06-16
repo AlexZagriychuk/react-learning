@@ -5,6 +5,7 @@ import { useAppSelector } from "../../redux/hooks"
 import { dateDiffAsString } from "../../utils/DateUtils"
 import { Post } from "./posts"
 import { useLayoutEffect, useRef } from "react"
+import { selectNextPostId, useAddPostMutation } from "../../redux/modules/postsSlice"
 
 
 interface IFormInput {
@@ -21,6 +22,8 @@ interface PostFormProps {
 }
 
 export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : PostFormProps ) {    
+    const [addPost] = useAddPostMutation()
+    
     const changeTextAreaHeightBasedOnScrollHeight = (textarea: HTMLTextAreaElement) => {
         // Changes textarea element height to fit content + 5px to avoid showing vertical scroll
         textarea.style.height = ""; 
@@ -36,6 +39,7 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
     
     const unknownUser = getUnknownUser() 
     let currentUser = useAppSelector(selectCurrentUser) || unknownUser
+    const nextPostId = useAppSelector(selectNextPostId)
 
     const editingPost = postToEditAndUser !== null
     const postUser = postToEditAndUser?.user || currentUser
@@ -48,7 +52,19 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
 
     const { register, handleSubmit } = useForm<IFormInput>({defaultValues })
     const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        console.log(editingPost ? "Editing" : "Creating",  "a new post:", data)
+        if(editingPost) {
+            console.error("POST editing is not implemented yet")
+        } else {
+            const newPost = {
+                userId: postUser.id,
+                id: nextPostId,
+                date: new Date().toLocaleString(),
+                body: data.postBody.toString(),
+                title: data.postTitle.toString()
+            }
+            addPost(newPost)
+        }
+
         onPostAddOrEditClosed()
     }
     const { ref: postBodyRef, ...postBodyRest } = register("postBody")

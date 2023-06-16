@@ -22,8 +22,11 @@ interface PostFormProps {
 }
 
 export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : PostFormProps ) {    
-    const [addPost] = useAddPostMutation()
-    
+    const [addPost, { isLoading: isAddPostApiLoading, isSuccess: isAddPostApiSuccess }] = useAddPostMutation()
+    if(isAddPostApiSuccess) {
+        onPostAddOrEditClosed()
+    }
+
     const changeTextAreaHeightBasedOnScrollHeight = (textarea: HTMLTextAreaElement) => {
         // Changes textarea element height to fit content + 5px to avoid showing vertical scroll
         textarea.style.height = ""; 
@@ -64,8 +67,6 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
             }
             addPost(newPost)
         }
-
-        onPostAddOrEditClosed()
     }
     const { ref: postBodyRef, ...postBodyRest } = register("postBody")
 
@@ -108,8 +109,13 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
                             <span className="post-date-diff">({dateDiffAsString(new Date(postDate))} ago)</span>
                         </>
                     )}
-                    <input type="submit" className="posts-page-btn" value={editingPost ? "Edit" : "Create"} />
-                    <input type="reset" className="posts-page-btn" value="Cancel" onClick={() => onPostAddOrEditClosed()} />
+                    {isAddPostApiLoading
+                        ? <div className="loading-spinner"></div>
+                        : <>
+                            <input type="submit" className="posts-page-btn" value={editingPost ? "Edit" : "Create"} />
+                            <input type="reset" className="posts-page-btn" value="Cancel" onClick={() => onPostAddOrEditClosed()} />
+                        </>
+                    }
                 </div>
             </li>
         </form>

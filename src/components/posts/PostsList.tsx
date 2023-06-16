@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useAppSelector } from "../../redux/hooks"
 import { ApiErrorComponent, selectApiErrorsByComponent } from "../../redux/modules/apiSlice"
 import { selectPosts, useGetPostsQuery } from "../../redux/modules/postsSlice"
@@ -7,7 +7,6 @@ import ApiError from "../error/ApiError"
 import { getUnknownUser } from "../user/users"
 import "./PostsList.css"
 import PostsListItem from "./PostsListItem"
-import { Post } from "./posts"
 import PostForm from "./PostForm"
 
 export default function PostsList() {
@@ -30,7 +29,7 @@ export default function PostsList() {
         setIsAddingNewPost(false)
     }
 
-    const getPostsListItemsReversed = (posts: Post[]) => {
+    const postsListItemsReversed = useMemo(() => {
         const res  = [] 
         for(let index = posts.length - 1; index >= 0; index--) {
             let post = posts[index]
@@ -38,8 +37,8 @@ export default function PostsList() {
 
             res.push(<PostsListItem key={post.id} post={post} user={user}/>)
         }
-        return res 
-    }
+        return res
+    }, [posts])
 
     let content
     if (isLoading) {
@@ -50,7 +49,7 @@ export default function PostsList() {
                 ? <PostForm postToEditAndUser={null} onPostAddOrEditClosed={onPostAddOrEditClosed} />
                 : <button className="posts-page-btn" onClick={() => setIsAddingNewPost(true)}>Add New Post</button>
             }
-            {getPostsListItemsReversed(posts)}
+            {postsListItemsReversed}
         </ul>
     } else if (isError) {
         content = <div>{error.toString()}</div>

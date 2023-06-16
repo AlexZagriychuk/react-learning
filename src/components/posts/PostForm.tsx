@@ -23,9 +23,12 @@ interface PostFormProps {
 
 export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : PostFormProps ) {    
     const [addPost, { isLoading: isAddPostApiLoading, isSuccess: isAddPostApiSuccess }] = useAddPostMutation()
-    if(isAddPostApiSuccess) {
-        onPostAddOrEditClosed()
-    }
+    // Avoid console error "Cannot update a component (`PostsList`) while rendering a different component (`PostForm`)" on first post add
+    useLayoutEffect(() => {
+        if(isAddPostApiSuccess) {
+            onPostAddOrEditClosed()
+        }
+    })
 
     const changeTextAreaHeightBasedOnScrollHeight = (textarea: HTMLTextAreaElement) => {
         // Changes textarea element height to fit content + 5px to avoid showing vertical scroll

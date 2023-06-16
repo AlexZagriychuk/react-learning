@@ -3,7 +3,7 @@ import counterSlice from './modules/counterSlice'
 import usersSlice from './modules/usersSlice'
 import postsSlice from './modules/postsSlice'
 import todoSlice from './modules/todoSlice'
-import { apiSlice } from './modules/apiSlice'
+import apiErrorsSlice, { apiSlice } from './modules/apiSlice'
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +11,7 @@ export const store = configureStore({
         users: usersSlice,
         posts: postsSlice,
         todo: todoSlice,
+        api_errors: apiErrorsSlice,
         [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (gDM) => gDM().concat(apiSlice.middleware),

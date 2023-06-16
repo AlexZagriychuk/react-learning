@@ -1,18 +1,19 @@
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { selectAllToDoByUserId, selectToDoApiError, toDoApiErrorClosed, useGetTodosQuery } from "../../redux/modules/todoSlice"
+import { useAppSelector } from "../../redux/hooks"
+import { selectAllToDoByUserId, useGetTodosQuery } from "../../redux/modules/todoSlice"
 import { selectCurrentUserId } from "../../redux/modules/usersSlice"
 import "./ToDoList.css"
 import { ToDoItem } from "./todo"
 import ToDoListItem from "./ToDoListItem"
+import { ApiErrorComponent, selectApiErrorsByComponent } from "../../redux/modules/apiSlice"
+import ApiError from "../error/ApiError"
 
 export default function ToDoList() {
     const {isLoading, isError, error } = useGetTodosQuery(undefined)
 
-    const dispatch = useAppDispatch()
     const currentUserId = useAppSelector(selectCurrentUserId)
     const toDoDataForCurrentUser = useAppSelector(state => selectAllToDoByUserId(state, currentUserId))
     const noToDoDataAvailable = !toDoDataForCurrentUser || (Array.isArray(toDoDataForCurrentUser) && toDoDataForCurrentUser.length === 0)
-    const toDoApiError = useAppSelector(selectToDoApiError)
+    const toDoApiErrors = useAppSelector(state => selectApiErrorsByComponent(state, ApiErrorComponent.TODOS))
 
     let content
     if (isError) {
@@ -34,10 +35,7 @@ export default function ToDoList() {
     return (
         <>
             <h2>ToDo List:</h2>
-            {toDoApiError.length > 0 && <div className="todo-api-error">
-                <p><b>API error text:</b><br />{toDoApiError}</p>
-                <div id="todo-api-error-close-btn" onClick={() => dispatch(toDoApiErrorClosed())}></div>
-            </div>}
+            {toDoApiErrors.map(toDoApiError => <ApiError key={toDoApiError.errorId} {...toDoApiError} />)}
             {content}
         </>
     )

@@ -18,15 +18,12 @@ export default function PostsListItem(props: {post: Post, user: User}) {
 
             <div className="post-content">
                 <h3 className="post-content-title">{props.post.title}</h3>
-                <div className="post-content-post">{props.post.body}</div>
+                <div className="post-content-body">{props.post.body}</div>
             </div>
 
-            <div className="post-date">
-                <i>Posted:</i>
-                <br/>
-                {props.post.date}
-                <br/>
-                <span>({dateDiffAsString(new Date(props.post.date))} ago)</span>
+            <div className="post-date-and-controls">
+                <span><i>Posted:</i><br/>{props.post.date}<br/></span>
+                <span className="post-date-diff">({dateDiffAsString(new Date(props.post.date))} ago)</span>
             </div>
         </li>
     )

@@ -9,6 +9,7 @@ import PostsList from './components/posts/PostsList.tsx'
 import ToDoList from './components/todo/ToDoList.tsx'
 import UserList from './components/user/UserList.tsx'
 import Root from './routes/root.tsx'
+import UserDetails from './components/user/UserDetails.tsx'
 
 
 const router = createBrowserRouter([
@@ -35,7 +36,16 @@ const router = createBrowserRouter([
       },
       {
         path: "/react/users",
-        element: <UserList />,
+        children: [
+          {
+            path: "/react/users",
+            element: <UserList />,
+          },
+          {
+            path: "/react/users/:userId",
+            element: <UserDetails />  
+          }
+        ]
       },
     ]
   },

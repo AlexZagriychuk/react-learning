@@ -1,8 +1,11 @@
 import { User } from "./users";
+import { useNavigate } from "react-router-dom";
 
-export default function UserListItem({avatar, name, username, type, registered}: User ) {
+export default function UserListItem({id, avatar, name, username, type, registered}: User ) {
+    const navigate = useNavigate();
+    
     return (
-        <li>
+        <li className="user" onClick={() => navigate(`./${id}`)}>
             <img className="user-avatar" src={avatar} alt="" />
             <div className="user-info">
                 <span className="user-name"><b>UserName: </b>{username}</span>

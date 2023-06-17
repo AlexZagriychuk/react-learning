@@ -38,7 +38,7 @@ export default function PostsList() {
             res.push(<PostsListItem key={post.id} post={post} user={user}/>)
         }
         return res
-    }, [posts])
+    }, [posts, userEntities])
 
     let content
     if (isLoading) {

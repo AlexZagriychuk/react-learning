@@ -61,7 +61,7 @@ export default function Navigation() {
                 </ul>
 
                 <div className="nav-bar-user" onClick={() => setUserSelectionOpened(!userSelectionOpened)}>
-                    <img className="nav-bar-user-avatar" src={currentUser.avatar} alt="Avatar" />
+                    <img className="nav-bar-user-avatar" src={currentUser.avatarSmall} alt="Avatar" />
                     <div className="nav-bar-user-data">
                         <span className="nav-bar-user-name">{currentUser.username}</span>
                         <span className="nav-bar-user-type">({currentUser.type})</span>

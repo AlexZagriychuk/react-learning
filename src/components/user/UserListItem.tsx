@@ -1,7 +1,7 @@
 import { User } from "./users";
 import { useNavigate } from "react-router-dom";
 
-export default function UserListItem({id, avatar, name, username, type, registered}: User ) {
+export default function UserListItem({id, avatarSmall: avatar, name, username, type, registered}: User ) {
     const navigate = useNavigate();
     
     return (

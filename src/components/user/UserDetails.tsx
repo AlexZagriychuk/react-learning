@@ -6,10 +6,13 @@ import "./UserDetails.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { useState } from "react";
 
 export default function UserDetails() {
     const params = useParams();
     const userId = params.userId
+
+    const [isImgLoading, setIsImgLoading] = useState(true)
 
     const user = useAppSelector(state => selectUserById(state, userId as EntityId))
     let userDetailsFields = [] as Array<{icon: IconDefinition, label: string, value: string}>
@@ -32,7 +35,16 @@ export default function UserDetails() {
             {user === undefined
                 ? <p>Loading...</p>
                 : <div className="user-details">
-                    <img className="user-details-avatar" src={user.avatarBig} alt="" />
+                    {/* Empty placeholder div with aspect ratio 3/2 (66.66% value) to occupy img space while real image is loading */}
+                    <div style={{ display: isImgLoading ? "block" : "none", width: '100%', height: '0', paddingBottom: '66.66%' }}></div>
+                    <img 
+                        className="user-details-avatar"
+                        src={user.avatarBig}
+                        alt=""
+                        style={{ display: isImgLoading ? "none" : "block" }}
+                        onLoad={() => setIsImgLoading(false)}
+                    />
+
                     <ul className="user-details-list">
                         {userDetailsFields.map(userDetailsField => {
                             return <li className="user-details-list-item" key={userDetailsField.label}>

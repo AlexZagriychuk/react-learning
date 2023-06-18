@@ -27,6 +27,7 @@
 .user-details-icon {
     flex-basis: 20%;
     flex-shrink: 0;
+    color: #2C98F0;
 }
 
 .user-details-data {

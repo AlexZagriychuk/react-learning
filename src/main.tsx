@@ -12,44 +12,38 @@ import Root from './routes/root.tsx'
 import UserDetails from './components/user/UserDetails.tsx'
 
 
-const router = createBrowserRouter([
-  {
-    path: "",
-    element: <Navigate to="/react" />,
-  },
-  {
-    path: "/react",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/react",
-        element: <PostsList />,
-      },
-      {
-        path: "/react/posts",
-        element: <PostsList />,
-      },
-      {
-        path: "/react/todo",
-        element: <ToDoList />,
-      },
-      {
-        path: "/react/users",
-        children: [
-          {
-            path: "/react/users",
-            element: <UserList />,
-          },
-          {
-            path: "/react/users/:userId",
-            element: <UserDetails />  
-          }
-        ]
-      },
-    ]
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: '',
+      element: <Navigate to='/posts' />,
+    },
+    {
+      path: '/',
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: 'posts',
+          element: <PostsList />,
+        },
+        {
+          path: 'todo',
+          element: <ToDoList />,
+        },
+        {
+          path: 'users',
+          element: <UserList />,
+        },
+        {
+          path: 'users/:userId',
+          element: <UserDetails />,
+        }
+      ],
+    },
+  ],
+  { basename: '/react' }
+);
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

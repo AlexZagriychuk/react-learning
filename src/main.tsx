@@ -33,17 +33,12 @@ const router = createBrowserRouter(
         },
         {
           path: 'users',
-          children: [
-            {
-              path: '',
-              element: <UserList />,
-            },
-            {
-              path: ':userId',
-              element: <UserDetails />,
-            }
-          ]
+          element: <UserList />,
         },
+        {
+          path: 'users/:userId',
+          element: <UserDetails />,
+        }
       ],
     },
   ],

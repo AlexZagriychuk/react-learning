@@ -77,7 +77,7 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
         <form className="updating-or-adding-post" onSubmit={handleSubmit(onSubmit)}>
             <li>
                 <div className="post-user-data">
-                    <img src={postUser.avatar} alt="" className="post-user-img" />
+                    <img src={postUser.avatarSmall} alt="" className="post-user-img" />
                     <span className="post-user-name">{postUser.username}</span>
                     <span className="post-user-type">({postUser.type})</span>
                     <span className="post-user-registered">Registered:<br/>{postUser.registered}</span>

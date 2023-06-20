@@ -1,6 +1,6 @@
 import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { User, UserType } from "../../components/user/users";
+import { User, UserType, getFakeAdminUser } from "../../components/user/users";
 import { apiSlice } from "./apiSlice";
 import { DateUnit, generateDates } from "../../utils/DateUtils";
 
@@ -33,21 +33,13 @@ const processGetUsersApiResponse = (usersApiResponseData: []): User[] => {
         const userId = userData.id
 
         if (index === 0) {
-            return {
-                id: userId,
-                type: UserType.ADMIN,
-                name: "Michael Scott",
-                username: "Michael_Scott_Best_Admin",
-                avatar: "/react/michael scott.jpg",
-                registered: fakeRegistrationDates[usersCount - 1].toLocaleDateString()
-            } as User
+            return getFakeAdminUser(userId, fakeUserRegistrationDateStr)
         } else {
             return {
-                id: userId,
+                ...userData,
                 type: UserType.WRITER,
-                name: userData.name,
-                username: userData.username,
-                avatar: `https://picsum.photos/id/${userId * 10}/300/200`,
+                avatarSmall: `https://picsum.photos/id/${userId * 10}/300/200`,
+                avatarBig: `https://picsum.photos/id/${userId * 10}/900/600`,
                 registered: fakeUserRegistrationDateStr
             } as User
         }

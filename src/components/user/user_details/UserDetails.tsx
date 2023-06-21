@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import "./UserDetails.css"
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import UserDetailsInfo from "./UserDetailsInfo";
 import UserDetailsPosts from "./UserDetailsPosts";
 import { useAppSelector } from "../../../redux/hooks";
@@ -30,21 +30,28 @@ export default function UserDetails() {
 
     const [activeTab, setActiveTab] = useState(UserDetailsTab.Info)
 
-    let content
+    const currentTab = useMemo(() => {
+        switch (activeTab) {
+            case UserDetailsTab.Info:
+                return <UserDetailsInfo user={user} />;
+            case UserDetailsTab.Albums:
+                return <UserDetailsAlbums user={user} />;
+            case UserDetailsTab.ToDo:
+                return <UserDetailsToDo user={user} />;
+            case UserDetailsTab.Posts:
+                return <UserDetailsPosts user={user} />;
+        }
+    }, [activeTab, user]);
+    
+    let content;
     if (isError) {
-        content = <div>{error.toString()}</div>
+      content = <div>{error.toString()}</div>;
     } else if (isLoading) {
-        content = <div>Loading...</div>
-    } else if (activeTab === UserDetailsTab.Info) {
-        content = <UserDetailsInfo user={user} />
-    } else if (activeTab === UserDetailsTab.Albums) {
-        content = <UserDetailsAlbums user={user} />
-    } else if (activeTab === UserDetailsTab.ToDo) {
-        content = <UserDetailsToDo user={user} />
-    } else if (activeTab === UserDetailsTab.Posts) {
-        content = <UserDetailsPosts user={user} />
-    } 
-
+      content = <div>Loading...</div>;
+    } else {
+      content = currentTab;
+    }
+  
     return (
         <>
             <h2>User Details{user ? ` (${user.username})` : ""}:</h2>

@@ -7,14 +7,7 @@ export default function UserDetailsPosts({user}: {user: User}) {
     const {data: posts, isLoading, isError, error} = useGetPostsByUserIdQuery(user.id) 
 
     const postsListItemsReversed = useMemo(() => {
-        const res  = []
-        if(posts) {
-            for(let index = posts.length - 1; index >= 0; index--) {
-                let post = posts[index]    
-                res.push(<PostsListItem key={post.id} post={post} user={user}/>)
-            }
-        }
-        return res
+        return posts ? posts.map(post => <PostsListItem key={post.id} post={post} user={user}/>).reverse() : []
     }, [posts, user])
 
     let content

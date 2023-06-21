@@ -30,14 +30,8 @@ export default function PostsList() {
     }
 
     const postsListItemsReversed = useMemo(() => {
-        const res  = [] 
-        for(let index = posts.length - 1; index >= 0; index--) {
-            let post = posts[index]
-            let user = userEntities[post.userId] || getUnknownUser()
-
-            res.push(<PostsListItem key={post.id} post={post} user={user}/>)
-        }
-        return res
+        const unknownUser = getUnknownUser()
+        return posts.map(post => <PostsListItem key={post.id} post={post} user={userEntities[post.userId] || unknownUser}/>).reverse()
     }, [posts, userEntities])
 
     let content

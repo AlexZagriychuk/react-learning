@@ -26,7 +26,7 @@ export default function ToDoList() {
         content = (
             <ul className="todo-list">
                 {toDoDataForCurrentUser.map((toDoItem: ToDoItem) => 
-                    <ToDoListItem key={toDoItem.id} toDoItem={toDoItem} />
+                    <ToDoListItem key={toDoItem.id} toDoItem={toDoItem} enableEditing={true} />
                 )}
             </ul>
         )

@@ -4,6 +4,7 @@ import { User, UserType, getFakeAdminUser } from "../../components/user/users";
 import { apiSlice } from "./apiSlice";
 import { DateUnit, generateDates } from "../../utils/DateUtils";
 import { Post } from "../../components/posts/posts";
+import { ToDoItem } from "../../components/todo/todo";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -26,10 +27,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 return responseData
             }
         }),
+        getTodosByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/todos`,
+            transformResponse: (responseData: []) => {
+                return responseData as ToDoItem[]
+            }
+        }),
     })
 })
 
-export const { useGetUsersQuery, useGetPostsByUserIdQuery } = extendedApiSlice
+export const { useGetUsersQuery, useGetPostsByUserIdQuery, useGetTodosByUserIdQuery } = extendedApiSlice
 
 // 1. Replace first user with our fake Admin user
 // 2. Add fake avatar to all fetched users (API does not return it, but our APP requires it)

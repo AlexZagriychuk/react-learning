@@ -3,7 +3,7 @@ import { useUpdateTodoMutation } from "../../redux/modules/todoSlice";
 import { ToDoItem } from "./todo";
 import { debounce } from "ts-debounce";
 
-export default function ToDoListItem({toDoItem} : {toDoItem: ToDoItem}) {
+export default function ToDoListItem({toDoItem, enableEditing} : {toDoItem: ToDoItem, enableEditing: boolean}) {
     const [completed, setCompleted] = useState(toDoItem.completed)
     const [prevToDoItemProp, setPrevToDoItemProp] = useState(toDoItem);
 
@@ -39,6 +39,7 @@ export default function ToDoListItem({toDoItem} : {toDoItem: ToDoItem}) {
                 className="todo-item-finished" 
                 type="checkbox" 
                 checked={completed} 
+                disabled={!enableEditing}
                 onChange={() => handleCompletedChange(toDoItem)}
             />
         </li>

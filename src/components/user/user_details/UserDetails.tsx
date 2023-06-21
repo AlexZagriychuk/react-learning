@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { selectUserById, useGetUsersQuery } from "../../../redux/modules/usersSlice";
 import { EntityId } from "@reduxjs/toolkit";
 import { User } from "../users";
+import UserDetailsToDo from "./UserDetailsToDo";
 
 export default function UserDetails() {
     const params = useParams();
@@ -33,7 +34,7 @@ export default function UserDetails() {
     } else if (activeTab === UserDetailsTab.Albums) {
         content = "Not Implemented yet"
     } else if (activeTab === UserDetailsTab.ToDo) {
-        content = "Not Implemented yet"
+        content = <UserDetailsToDo user={user} />
     } else if (activeTab === UserDetailsTab.Posts) {
         content = <UserDetailsPosts user={user} />
     } 

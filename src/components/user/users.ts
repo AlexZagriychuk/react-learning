@@ -37,6 +37,12 @@ export interface Users {
     usersData: Array<User>
 }
 
+export interface UserAlbum {
+    id: number;
+    userId: number,
+    title: string;
+}
+
 export const getNextUserId = (usersData: Array<User>) : number => {
     return Math.max(...usersData.map(user => user.id)) + 1
 }

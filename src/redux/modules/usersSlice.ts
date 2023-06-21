@@ -1,6 +1,6 @@
 import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { User, UserType, getFakeAdminUser } from "../../components/user/users";
+import { User, UserAlbum, UserType, getFakeAdminUser } from "../../components/user/users";
 import { apiSlice } from "./apiSlice";
 import { DateUnit, generateDates } from "../../utils/DateUtils";
 import { Post } from "../../components/posts/posts";
@@ -33,10 +33,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 return responseData as ToDoItem[]
             }
         }),
+        getAlbumsByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/albums`,
+            transformResponse: (responseData: []) => {
+                return responseData as UserAlbum[]
+            }
+        }),
     })
 })
 
-export const { useGetUsersQuery, useGetPostsByUserIdQuery, useGetTodosByUserIdQuery } = extendedApiSlice
+export const { useGetUsersQuery, useGetPostsByUserIdQuery, useGetTodosByUserIdQuery, useGetAlbumsByUserIdQuery } = extendedApiSlice
 
 // 1. Replace first user with our fake Admin user
 // 2. Add fake avatar to all fetched users (API does not return it, but our APP requires it)

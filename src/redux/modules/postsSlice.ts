@@ -7,7 +7,7 @@ import { ApiErrorComponent, apiErrorCaught, apiSlice } from "./apiSlice";
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getPosts: builder.query({
+        getPosts: builder.query<Post[], void>({
             query: () => '/posts',
             transformResponse: (responseData: Post[]) => {
                 const postsLength = responseData.length

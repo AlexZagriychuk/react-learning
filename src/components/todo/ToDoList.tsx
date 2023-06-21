@@ -8,7 +8,7 @@ import { ApiErrorComponent, selectApiErrorsByComponent } from "../../redux/modul
 import ApiError from "../error/ApiError"
 
 export default function ToDoList() {
-    const {isLoading, isError, error } = useGetTodosQuery(undefined)
+    const {isLoading, isError, error } = useGetTodosQuery()
 
     const currentUserId = useAppSelector(selectCurrentUserId)
     const toDoDataForCurrentUser = useAppSelector(state => selectAllToDoByUserId(state, currentUserId))

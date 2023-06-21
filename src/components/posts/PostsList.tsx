@@ -10,7 +10,7 @@ import PostsListItem from "./PostsListItem"
 import PostForm from "./PostForm"
 
 export default function PostsList() {
-    const { isLoading, isSuccess, isError, error } = useGetPostsQuery(undefined)
+    const { isLoading, isSuccess, isError, error } = useGetPostsQuery()
 
     const posts = useAppSelector(selectPosts)
     const userEntities = useAppSelector(selectAllUserEntities)

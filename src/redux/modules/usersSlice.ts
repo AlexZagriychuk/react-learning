@@ -9,7 +9,7 @@ import { ToDoItem } from "../../components/todo/todo";
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getUsers: builder.query({
+        getUsers: builder.query<User[], void>({
             query: () => '/users',
             transformResponse: (responseData: []) => {
                 return processGetUsersApiResponse(responseData)

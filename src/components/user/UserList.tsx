@@ -4,7 +4,7 @@ import UserListItem from "./UserListItem"
 import { useAppSelector } from "../../redux/hooks"
 
 export default function UserList() {
-    const { isLoading, isError, error } = useGetUsersQuery(undefined)
+    const { isLoading, isError, error } = useGetUsersQuery()
     const allUsers = useAppSelector(selectAllUsers)
 
     let content

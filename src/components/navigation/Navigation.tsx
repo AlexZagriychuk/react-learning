@@ -9,7 +9,7 @@ export default function Navigation() {
     const dispatch = useAppDispatch()
     const [userSelectionOpened, setUserSelectionOpened] = useState(false)
 
-    const { isLoading: isLoadingUsers, isSuccess: isSuccessUsers, isError: isErrorUsers, error: errorUsers } = useGetUsersQuery(undefined)
+    const { isLoading: isLoadingUsers, isSuccess: isSuccessUsers, isError: isErrorUsers, error: errorUsers } = useGetUsersQuery()
 
     const allUsers = useAppSelector(selectAllUsers)
     const currentUserId = useAppSelector(selectCurrentUserId)

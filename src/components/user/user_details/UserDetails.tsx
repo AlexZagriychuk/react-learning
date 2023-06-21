@@ -4,13 +4,14 @@ import { useState } from "react";
 import UserDetailsInfo from "./UserDetailsInfo";
 import UserDetailsPosts from "./UserDetailsPosts";
 import { useAppSelector } from "../../../redux/hooks";
-import { selectUserById } from "../../../redux/modules/usersSlice";
+import { selectUserById, useGetUsersQuery } from "../../../redux/modules/usersSlice";
 import { EntityId } from "@reduxjs/toolkit";
 import { User } from "../users";
 
 export default function UserDetails() {
     const params = useParams();
     const userId = parseInt(params.userId as string)
+    const { isLoading, isError, error } = useGetUsersQuery(undefined) // In case if URL /users/:userId is opened directly
     const user = useAppSelector(state => selectUserById(state, userId as EntityId)) as User
 
     enum UserDetailsTab {
@@ -23,19 +24,23 @@ export default function UserDetails() {
     const [activeTab, setActiveTab] = useState(UserDetailsTab.Info)
 
     let content
-    if(activeTab === UserDetailsTab.Info) {
+    if (isError) {
+        content = <div>{error.toString()}</div>
+    } else if (isLoading) {
+        content = <div>Loading...</div>
+    } else if (activeTab === UserDetailsTab.Info) {
         content = <UserDetailsInfo user={user} />
-    } else if(activeTab === UserDetailsTab.Albums) {
+    } else if (activeTab === UserDetailsTab.Albums) {
         content = "Not Implemented yet"
-    } else if(activeTab === UserDetailsTab.ToDo) {
+    } else if (activeTab === UserDetailsTab.ToDo) {
         content = "Not Implemented yet"
-    } else if(activeTab === UserDetailsTab.Posts) {
+    } else if (activeTab === UserDetailsTab.Posts) {
         content = <UserDetailsPosts user={user} />
     } 
 
     return (
         <>
-            <h2>User Details:</h2>
+            <h2>User Details{user ? ` (${user.username})` : ""}:</h2>
 
             <ul className="user-details-tabs">
                 {Object.entries(UserDetailsTab).filter(userDetailsTab => isNaN(parseInt(userDetailsTab[0]))).map(tabEntry => 

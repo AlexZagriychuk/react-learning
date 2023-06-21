@@ -1,6 +1,6 @@
 import { Photo } from "../../../redux/modules/photosSlice";
 
-export default function UserAlbumPhoto({photo}: {photo: Photo}) {
+export default function UserDetailsAlbumPhoto({photo}: {photo: Photo}) {
     return (
         <li className="user-details-album-photo">
             <img className="user-details-album-photo-img" src={photo.thumbnailUrl} alt="No Found" />

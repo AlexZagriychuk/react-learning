@@ -1,10 +1,10 @@
 import { useGetPhotosByAlbumIdQuery } from "../../../redux/modules/photosSlice";
-import UserAlbumPhoto from "./UserAlbumPhoto";
+import UserDetailsAlbumPhoto from "./UserDetailsAlbumPhoto";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from "react";
 
-export default function UserAlbum({albumId, albumTitle}: {albumId: number, albumTitle: string}) {
+export default function UserDetailsAlbum({albumId, albumTitle}: {albumId: number, albumTitle: string}) {
     const {data: photos, isError, error, isLoading} = useGetPhotosByAlbumIdQuery(albumId)
     const [albumOpened, setAlbumOpened] = useState(false)
 
@@ -23,7 +23,7 @@ export default function UserAlbum({albumId, albumTitle}: {albumId: number, album
         } else if (photos) {
             content = (
                 <ul className="user-details-album-photos">
-                    {photos.map(photo => <UserAlbumPhoto key={photo.id} photo={photo} />)}
+                    {photos.map(photo => <UserDetailsAlbumPhoto key={photo.id} photo={photo} />)}
                 </ul>
             )
         }

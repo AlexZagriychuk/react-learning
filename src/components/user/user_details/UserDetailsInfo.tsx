@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
-import { selectUserById } from "../../redux/modules/usersSlice";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectUserById } from "../../../redux/modules/usersSlice";
 import { EntityId } from "@reduxjs/toolkit";
 import "./UserDetails.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,10 +7,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
 
-export default function UserDetails() {
-    const params = useParams();
-    const userId = params.userId
-
+export default function UserDetails({userId}: {userId: number}) {
     const [isImgLoading, setIsImgLoading] = useState(true)
 
     const user = useAppSelector(state => selectUserById(state, userId as EntityId))
@@ -31,27 +27,26 @@ export default function UserDetails() {
 
     return (
         <>
-            <h2>User Details:</h2>
             {user === undefined
                 ? <p>Loading...</p>
-                : <div className="user-details">
+                : <div className="user-details-info">
                     {/* Empty placeholder div with aspect ratio 3/2 (66.66% value) to occupy img space while real image is loading */}
                     <div style={{ display: isImgLoading ? "block" : "none", width: '100%', height: '0', paddingBottom: '66.66%' }}></div>
                     <img 
-                        className="user-details-avatar"
+                        className="user-details-info-avatar"
                         src={user.avatarBig}
                         alt=""
                         style={{ display: isImgLoading ? "none" : "block" }}
                         onLoad={() => setIsImgLoading(false)}
                     />
 
-                    <ul className="user-details-list">
+                    <ul className="user-details-info-list">
                         {userDetailsFields.map(userDetailsField => {
-                            return <li className="user-details-list-item" key={userDetailsField.label}>
-                                <FontAwesomeIcon className="user-details-icon" icon={userDetailsField.icon} />
-                                <div className="user-details-data">
-                                    <span className="user-details-data-value">{userDetailsField.value}</span>
-                                    <span className="user-details-data-label">{userDetailsField.label}</span>
+                            return <li className="user-details-info-list-item" key={userDetailsField.label}>
+                                <FontAwesomeIcon className="user-details-info-icon" icon={userDetailsField.icon} />
+                                <div className="user-details-info-data">
+                                    <span className="user-details-info-data-value">{userDetailsField.value}</span>
+                                    <span className="user-details-info-data-label">{userDetailsField.label}</span>
                                 </div>
                             </li>
                         })}

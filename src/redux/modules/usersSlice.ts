@@ -1,22 +1,48 @@
 import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { User, UserType, getFakeAdminUser } from "../../components/user/users";
+import { User, UserAlbum, UserType, getFakeAdminUser } from "../../components/user/users";
 import { apiSlice } from "./apiSlice";
 import { DateUnit, generateDates } from "../../utils/DateUtils";
+import { Post } from "../../components/posts/posts";
+import { ToDoItem } from "../../components/todo/todo";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getUsers: builder.query({
+        getUsers: builder.query<User[], void>({
             query: () => '/users',
             transformResponse: (responseData: []) => {
                 return processGetUsersApiResponse(responseData)
             }
-        })
+        }),
+        getPostsByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/posts`,
+            transformResponse: (responseData: Post[]) => {
+                const postsLength = responseData.length
+
+                // Generate fake post dates (API does not have this field, but our App has)
+                const generatedDates = generateDates(postsLength)
+                responseData.forEach((post, index) => {post.date = generatedDates[postsLength - index - 1].toLocaleString()})
+        
+                return responseData
+            }
+        }),
+        getTodosByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/todos`,
+            transformResponse: (responseData: []) => {
+                return responseData as ToDoItem[]
+            }
+        }),
+        getAlbumsByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/albums`,
+            transformResponse: (responseData: []) => {
+                return responseData as UserAlbum[]
+            }
+        }),
     })
 })
 
-export const { useGetUsersQuery } = extendedApiSlice
+export const { useGetUsersQuery, useGetPostsByUserIdQuery, useGetTodosByUserIdQuery, useGetAlbumsByUserIdQuery } = extendedApiSlice
 
 // 1. Replace first user with our fake Admin user
 // 2. Add fake avatar to all fetched users (API does not return it, but our APP requires it)

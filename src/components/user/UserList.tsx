@@ -4,20 +4,20 @@ import UserListItem from "./UserListItem"
 import { useAppSelector } from "../../redux/hooks"
 
 export default function UserList() {
-    const { isLoading, isSuccess, isError, error } = useGetUsersQuery("")
+    const { isLoading, isError, error } = useGetUsersQuery()
     const allUsers = useAppSelector(selectAllUsers)
 
     let content
-    if (isLoading) {
+    if (isError) {
+        content = <div>{error.toString()}</div>
+    } else if (isLoading) {
         content = <div>Loading...</div>
-    } else if (isSuccess) {
+    } else {
         content = <ul className="users-list">
             {allUsers.map(user => {
                 return <UserListItem key={user.id} {...user} />
             })}
         </ul>
-    } else if (isError) {
-        content = <div>{error.toString()}</div>
     }
 
     return (

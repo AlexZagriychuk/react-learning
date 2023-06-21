@@ -7,7 +7,7 @@ import { MaybeDrafted } from "@reduxjs/toolkit/dist/query/core/buildThunks";
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getTodos: builder.query({
+        getTodos: builder.query<ToDoItem[], void>({
             query: () => '/todos',
             transformResponse: (responseData: []) => {
                 return responseData as ToDoItem[]

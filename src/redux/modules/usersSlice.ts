@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import { User, UserType, getFakeAdminUser } from "../../components/user/users";
 import { apiSlice } from "./apiSlice";
 import { DateUnit, generateDates } from "../../utils/DateUtils";
+import { Post } from "../../components/posts/posts";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
@@ -12,11 +13,23 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             transformResponse: (responseData: []) => {
                 return processGetUsersApiResponse(responseData)
             }
-        })
+        }),
+        getPostsByUserId: builder.query({
+            query: (userId: number) => `/users/${userId}/posts`,
+            transformResponse: (responseData: Post[]) => {
+                const postsLength = responseData.length
+
+                // Generate fake post dates (API does not have this field, but our App has)
+                const generatedDates = generateDates(postsLength)
+                responseData.forEach((post, index) => {post.date = generatedDates[postsLength - index - 1].toLocaleString()})
+        
+                return responseData
+            }
+        }),
     })
 })
 
-export const { useGetUsersQuery } = extendedApiSlice
+export const { useGetUsersQuery, useGetPostsByUserIdQuery } = extendedApiSlice
 
 // 1. Replace first user with our fake Admin user
 // 2. Add fake avatar to all fetched users (API does not return it, but our APP requires it)

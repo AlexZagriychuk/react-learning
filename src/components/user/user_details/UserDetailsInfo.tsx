@@ -1,16 +1,13 @@
-import { useAppSelector } from "../../../redux/hooks";
-import { selectUserById } from "../../../redux/modules/usersSlice";
-import { EntityId } from "@reduxjs/toolkit";
 import "./UserDetails.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
+import { User } from "../users";
 
-export default function UserDetails({userId}: {userId: number}) {
+export default function UserDetails({user}: {user: User}) {
     const [isImgLoading, setIsImgLoading] = useState(true)
 
-    const user = useAppSelector(state => selectUserById(state, userId as EntityId))
     let userDetailsFields = [] as Array<{icon: IconDefinition, label: string, value: string}>
     if(user) {
         const userAddress = `${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`

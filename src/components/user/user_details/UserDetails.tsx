@@ -2,10 +2,16 @@ import { useParams } from "react-router-dom";
 import "./UserDetails.css"
 import { useState } from "react";
 import UserDetailsInfo from "./UserDetailsInfo";
+import UserDetailsPosts from "./UserDetailsPosts";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectUserById } from "../../../redux/modules/usersSlice";
+import { EntityId } from "@reduxjs/toolkit";
+import { User } from "../users";
 
 export default function UserDetails() {
     const params = useParams();
     const userId = parseInt(params.userId as string)
+    const user = useAppSelector(state => selectUserById(state, userId as EntityId)) as User
 
     enum UserDetailsTab {
         "Info",
@@ -15,6 +21,17 @@ export default function UserDetails() {
     }
 
     const [activeTab, setActiveTab] = useState(UserDetailsTab.Info)
+
+    let content
+    if(activeTab === UserDetailsTab.Info) {
+        content = <UserDetailsInfo user={user} />
+    } else if(activeTab === UserDetailsTab.Albums) {
+        content = "Not Implemented yet"
+    } else if(activeTab === UserDetailsTab.ToDo) {
+        content = "Not Implemented yet"
+    } else if(activeTab === UserDetailsTab.Posts) {
+        content = <UserDetailsPosts user={user} />
+    } 
 
     return (
         <>
@@ -31,7 +48,7 @@ export default function UserDetails() {
             </ul>
 
             <div className="user-details-content">
-                <UserDetailsInfo userId={userId} />
+                {content}
             </div>
         </>
     )

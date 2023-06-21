@@ -5,15 +5,17 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
 import { User } from "../users";
 
-export default function UserDetails({user}: {user: User}) {
+export default function UserDetailsInfo({user}: {user: User}) {
     const [isImgLoading, setIsImgLoading] = useState(true)
 
     let userDetailsFields = [] as Array<{icon: IconDefinition, label: string, value: string}>
     if(user) {
         const userAddress = `${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`
         userDetailsFields = [
-            {icon: icon({name: "user-tie"}), label: "Name", value: user.name},
+            {icon: icon({name: "user-tie"}), label: "Full Name", value: user.name},
             {icon: icon({name: "user"}), label: "User Name", value: user.username},
+            {icon: icon({name: "users-viewfinder"}), label: "User Type", value: user.type},
+            {icon: icon({name: "calendar-check"}), label: "Registered", value: user.registered},
             {icon: icon({name: "envelope"}), label: "Email", value: user.email},
             {icon: icon({name: "phone"}), label: "Phone", value: user.phone},
             {icon: icon({name: "globe"}), label: "Website", value: user.website},

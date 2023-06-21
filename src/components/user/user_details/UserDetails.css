@@ -1,3 +1,49 @@
+/* ====== .user-details-tabs ====== */
+.user-details-tabs {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding-left: 0px;
+    width: fit-content;
+    margin: 0 auto 30px;    
+    
+    border: 2px solid #2C98F0;
+    border-radius: 10px;
+}
+
+.user-details-tabs li {
+    padding: 5px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.user-details-tabs li + li {
+    border-left: 2px solid #2C98F0;
+}
+
+.user-details-tabs li:first-of-type {
+    /* .user-details-tabs: border-radius - border line-width */
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.user-details-tabs li:last-of-type {
+    /* .user-details-tabs: border-radius - border line-width */
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.user-details-tabs li.active {
+    background-color: #2C98F0;
+    box-shadow: 0 0 5px rebeccapurple;
+}
+
+.user-details-tabs li:not(.active):hover {
+    background-color: rgb(204, 204, 254);
+}
+
+
+/* ====== .user-details-info ====== */
 .user-details-info {
     margin: 0 auto;
     max-width: 700px;

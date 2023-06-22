@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { useGetPostsByUserIdQuery } from "../../../redux/modules/usersSlice"
+import { useGetPostsByUserIdQuery } from "../../../redux/modules/users"
 import PostsListItem from "../../posts/PostsListItem"
 import { User } from "../userTypes"
 import { postsListStyles } from "../../posts/PostsList"

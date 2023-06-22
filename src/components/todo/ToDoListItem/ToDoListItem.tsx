@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useUpdateTodoMutation } from "../../../redux/modules/todoSlice";
+import { useUpdateTodoMutation } from "../../../redux/modules/todo";
 import { ToDoItem } from "../todoTypes";
 import { debounce } from "ts-debounce";
 import styles from "./ToDoListItem.module.css"

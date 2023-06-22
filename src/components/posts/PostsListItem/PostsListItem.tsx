@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../redux/hooks";
-import { selectCurrentUserId } from "../../../redux/modules/usersSlice";
+import { selectCurrentUserId } from "../../../redux/modules/users";
 import { dateDiffAsString } from "../../../utils/dateUtils";
 import { User } from "../../user/userTypes";
 import { Post } from "../postsTypes";

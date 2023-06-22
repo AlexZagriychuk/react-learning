@@ -1,4 +1,4 @@
-import { useGetTodosByUserIdQuery } from "../../../redux/modules/usersSlice"
+import { useGetTodosByUserIdQuery } from "../../../redux/modules/users"
 import { User } from "../userTypes"
 import { ToDoItem } from "../../todo/todoTypes"
 import ToDoListItem from "../../todo/ToDoListItem"

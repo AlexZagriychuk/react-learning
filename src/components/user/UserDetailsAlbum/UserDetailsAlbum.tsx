@@ -1,4 +1,4 @@
-import { useGetPhotosByAlbumIdQuery } from "../../../redux/modules/photosSlice";
+import { useGetPhotosByAlbumIdQuery } from "../../../redux/modules/photos";
 import UserDetailsAlbumPhoto from "../UserDetailsAlbumPhoto/UserDetailsAlbumPhoto";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro"

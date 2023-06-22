@@ -1,4 +1,4 @@
-import { useGetAlbumsByUserIdQuery } from "../../../redux/modules/usersSlice"
+import { useGetAlbumsByUserIdQuery } from "../../../redux/modules/users"
 import { User } from "../userTypes"
 import UserDetailsAlbum from "../UserDetailsAlbum/UserDetailsAlbum"
 import styles from "./UserDetailsAlbums.module.css"

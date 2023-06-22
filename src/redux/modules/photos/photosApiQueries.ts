@@ -1,7 +1,7 @@
-import { Photo } from "../../components/user/UserDetailsAlbumPhoto";
-import { apiSlice } from "./apiSlice";
+import { Photo } from "../../../components/user/UserDetailsAlbumPhoto";
+import { baseApiSlice } from "../common_api";
 
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const photosApi = baseApiSlice.injectEndpoints({
     endpoints: builder => ({
         getPhotosByAlbumId: builder.query({
             query: (albumId: number) => `/photos?albumId=${albumId}`,
@@ -12,4 +12,4 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetPhotosByAlbumIdQuery } = extendedApiSlice
+export const { useGetPhotosByAlbumIdQuery } = photosApi

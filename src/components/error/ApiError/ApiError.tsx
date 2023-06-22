@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../redux/hooks"
 import styles from "./ApiError.module.css"
-import { apiErrorClosed } from "../../../redux/modules/apiSlice"
+import { apiErrorClosed } from "../../../redux/modules/common_api"
 import { ApiErrorData } from "./types"
 
 export default function ApiError({errorId, errorText} : ApiErrorData) {

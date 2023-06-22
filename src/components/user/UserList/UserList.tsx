@@ -1,5 +1,6 @@
 import styles from "./UsersList.module.css"
-import { selectAllUsers, useGetUsersQuery } from "../../../redux/modules/usersSlice"
+import { selectAllUsers } from "../../../redux/modules/users"
+import { useGetUsersQuery } from "../../../redux/modules/users"
 import UserListItem from "../UserListItem"
 import { useAppSelector } from "../../../redux/hooks"
 

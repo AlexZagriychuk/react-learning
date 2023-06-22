@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./Navigation.module.css"
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { currentUserChanged, selectCurrentUserId, selectCurrentUser, useGetUsersQuery, selectAllUsers } from "../../redux/modules/usersSlice";
+import { currentUserChanged, selectCurrentUserId, selectCurrentUser, selectAllUsers } from "../../redux/modules/users";
+import { useGetUsersQuery } from "../../redux/modules/users";
 import { useEffect, useState } from "react";
 import { User } from "../user/userTypes";
 import { getUnknownUser } from "../user/userUtils";

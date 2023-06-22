@@ -1,12 +1,5 @@
+import { Photo } from "../../components/user/UserDetailsAlbumPhoto";
 import { apiSlice } from "./apiSlice";
-
-export interface Photo {
-    "albumId": number,
-    "id": number,
-    "title": string,
-    "url": string,
-    "thumbnailUrl": string
-}
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({

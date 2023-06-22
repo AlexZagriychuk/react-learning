@@ -1,6 +1,8 @@
 import { EntityId, EntityState, PayloadAction, createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
-import { ToDoItem, getNextToDoId } from "../../components/todo/todo";
-import { ApiErrorComponent, apiErrorCaught, apiSlice } from "./apiSlice";
+import { ToDoItem } from "../../components/todo/todoTypes";
+import { getNextToDoId } from "../../components/todo/todoUtils";
+import { apiErrorCaught, apiSlice } from "./apiSlice";
+import { ApiErrorComponent } from "../../components/error/ApiError";
 import { RootState } from "../store";
 import { MaybeDrafted } from "@reduxjs/toolkit/dist/query/core/buildThunks";
 
@@ -58,7 +60,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const { useGetTodosQuery, useUpdateTodoMutation } = extendedApiSlice
 
-export interface UserWithToDo {
+interface UserWithToDo {
     id: EntityId;
     toDoIds: EntityId[];
 }

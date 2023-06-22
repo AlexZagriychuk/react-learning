@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { RootState } from '../store'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { RootState } from "../store"
+import { ApiErrorData, ApiErrorComponent } from "../../components/error/ApiError"
 
 // We create a single API Slice for the whole app, but store queries in the specific slice files responsible for this module by using:
 // apiSlice.injectEndpoints({
@@ -14,18 +15,6 @@ export const apiSlice = createApi({
     endpoints: () => ({})
 })
 
-
-export enum ApiErrorComponent {
-    TODOS,
-    POSTS,
-    USERS
-}
-
-export interface ApiErrorData { 
-    errorId: number, 
-    errorComponent: ApiErrorComponent, 
-    errorText: string 
-}
 
 export const apiErrorsSlice = createSlice({
     name: "api_errors",

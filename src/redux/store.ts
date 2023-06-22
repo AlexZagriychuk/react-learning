@@ -1,13 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './modules/counterSlice'
-import usersSlice from './modules/usersSlice'
-import postsSlice from './modules/postsSlice'
-import todoSlice from './modules/todoSlice'
-import apiErrorsSlice, { apiSlice } from './modules/apiSlice'
+import { configureStore } from "@reduxjs/toolkit"
+import usersSlice from "./modules/usersSlice"
+import postsSlice from "./modules/postsSlice"
+import todoSlice from "./modules/todoSlice"
+import apiErrorsSlice, { apiSlice } from "./modules/apiSlice"
 
 export const store = configureStore({
     reducer: {
-        counter: counterSlice,
         users: usersSlice,
         posts: postsSlice,
         todo: todoSlice,

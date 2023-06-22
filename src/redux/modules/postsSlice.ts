@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Post, getNextPostId } from "../../components/posts/posts";
+import { Post } from "../../components/posts/postsTypes";
+import { getNextPostId } from "../../components/posts/postsUtils";
 import { RootState } from "../store";
-import { generateDates } from "../../utils/DateUtils";
-import { ApiErrorComponent, apiErrorCaught, apiSlice } from "./apiSlice";
+import { generateDates } from "../../utils/dateUtils";
+import { apiErrorCaught, apiSlice } from "./apiSlice";
+import { ApiErrorComponent } from "../../components/error/ApiError";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({

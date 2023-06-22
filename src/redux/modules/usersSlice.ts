@@ -1,10 +1,11 @@
 import { PayloadAction, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { User, UserAlbum, UserType, getFakeAdminUser } from "../../components/user/users";
+import { User, UserAlbum, UserType } from "../../components/user/userTypes";
+import { getFakeAdminUser } from "../../components/user/userUtils";
 import { apiSlice } from "./apiSlice";
-import { DateUnit, generateDates } from "../../utils/DateUtils";
-import { Post } from "../../components/posts/posts";
-import { ToDoItem } from "../../components/todo/todo";
+import { DateUnit, generateDates } from "../../utils/dateUtils";
+import { Post } from "../../components/posts/postsTypes";
+import { ToDoItem } from "../../components/todo/todoTypes";
 
 
 export const extendedApiSlice = apiSlice.injectEndpoints({

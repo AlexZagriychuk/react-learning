@@ -1,0 +1,16 @@
+.user-details-album-photo {
+    width: 150px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.user-details-album-photo-title {
+    padding: 5px;
+}
+
+.user-details-album-photo-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}

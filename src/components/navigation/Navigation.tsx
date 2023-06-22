@@ -3,7 +3,8 @@ import styles from "./Navigation.module.css"
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { currentUserChanged, selectCurrentUserId, selectCurrentUser, useGetUsersQuery, selectAllUsers } from "../../redux/modules/usersSlice";
 import { useEffect, useState } from "react";
-import { User, getUnknownUser } from "../user/users";
+import { User } from "../user/userTypes";
+import { getUnknownUser } from "../user/userUtils";
 
 export default function Navigation() {
     const dispatch = useAppDispatch()

@@ -3,6 +3,7 @@ import UserDetailsAlbumPhoto from "./UserDetailsAlbumPhoto";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState } from "react";
+import styles from "./UserDetails.module.css"
 
 export default function UserDetailsAlbum({albumId, albumTitle}: {albumId: number, albumTitle: string}) {
     const {data: photos, isError, error, isLoading} = useGetPhotosByAlbumIdQuery(albumId)
@@ -22,7 +23,7 @@ export default function UserDetailsAlbum({albumId, albumTitle}: {albumId: number
             content = <p>No photos available for this album</p>
         } else if (photos) {
             content = (
-                <ul className="user-details-album-photos">
+                <ul className={styles["user-details-album-photos"]}>
                     {photos.map(photo => <UserDetailsAlbumPhoto key={photo.id} photo={photo} />)}
                 </ul>
             )
@@ -30,10 +31,10 @@ export default function UserDetailsAlbum({albumId, albumTitle}: {albumId: number
     }
 
     return (
-        <li className="user-details-album">
-            <h4 className="user-details-album-title">
+        <li className={styles["user-details-album"]}>
+            <h4 className={styles["user-details-album-title"]}>
                 Album: {albumTitle}
-                <FontAwesomeIcon className="user-details-album-btn" icon={btnIcon} onClick={() => setAlbumOpened(!albumOpened)} />
+                <FontAwesomeIcon className={styles["user-details-album-btn"]} icon={btnIcon} onClick={() => setAlbumOpened(!albumOpened)} />
             </h4>
             {content}
         </li>

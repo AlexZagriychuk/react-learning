@@ -10,7 +10,7 @@
     white-space: pre-line;
 }
 
-#api-error-close-btn {
+.api-error-close-btn {
     flex-shrink: 0;
     color: inherit;
     background-color: transparent;
@@ -20,7 +20,7 @@
     cursor: pointer;
     position: relative;
 }
-#api-error-close-btn::before, #api-error-close-btn::after {
+.api-error-close-btn::before, .api-error-close-btn::after {
     position: absolute;
     content: "";
     background-color: red;
@@ -29,9 +29,9 @@
     left: 0%;
     top: 50%;
 }
-#api-error-close-btn::before {
+.api-error-close-btn::before {
     transform: rotate(45deg);
 }
-#api-error-close-btn::after {
+.api-error-close-btn::after {
     transform: rotate(-45deg);
 }

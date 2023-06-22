@@ -2,6 +2,7 @@ import { useGetTodosByUserIdQuery } from "../../../redux/modules/usersSlice"
 import { User } from "../users"
 import { ToDoItem } from "../../todo/todo"
 import ToDoListItem from "../../todo/ToDoListItem"
+import todoStyles from "../../todo/ToDoList.module.css"
 
 export default function UserDetailsToDo({user}: {user: User}) {
     const {data: todos, isLoading, isError, error} = useGetTodosByUserIdQuery(user.id) 
@@ -15,7 +16,7 @@ export default function UserDetailsToDo({user}: {user: User}) {
         content = <p>No todo available for this user</p>
     } else {
         content = (
-            <ul className="todo-list">
+            <ul className={todoStyles["todo-list"]}>
                 {todos.map((toDoItem: ToDoItem) => 
                     <ToDoListItem key={toDoItem.id} toDoItem={toDoItem} enableEditing={false} />
                 )}

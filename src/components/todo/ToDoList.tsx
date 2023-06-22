@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../redux/hooks"
 import { selectAllToDoByUserId, useGetTodosQuery } from "../../redux/modules/todoSlice"
 import { selectCurrentUserId } from "../../redux/modules/usersSlice"
-import "./ToDoList.css"
+import styles from "./ToDoList.module.css"
 import { ToDoItem } from "./todo"
 import ToDoListItem from "./ToDoListItem"
 import { ApiErrorComponent, selectApiErrorsByComponent } from "../../redux/modules/apiSlice"
@@ -24,7 +24,7 @@ export default function ToDoList() {
         content = <p>No todo available for this user</p>
     } else {
         content = (
-            <ul className="todo-list">
+            <ul className={styles["todo-list"]}>
                 {toDoDataForCurrentUser.map((toDoItem: ToDoItem) => 
                     <ToDoListItem key={toDoItem.id} toDoItem={toDoItem} enableEditing={true} />
                 )}

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import "./UserDetails.css"
+import styles from "./UserDetails.module.css"
 import { useLayoutEffect, useMemo, useState } from "react";
 import UserDetailsInfo from "./UserDetailsInfo";
 import UserDetailsPosts from "./UserDetailsPosts";
@@ -56,17 +56,17 @@ export default function UserDetails() {
         <>
             <h2>User Details{user ? ` (${user.username})` : ""}:</h2>
 
-            <ul className="user-details-tabs">
+            <ul className={styles["user-details-tabs"]}>
                 {Object.entries(UserDetailsTab).filter(userDetailsTab => isNaN(parseInt(userDetailsTab[0]))).map(tabEntry => 
                     <li 
                         key={tabEntry[0]}
-                        className={activeTab === tabEntry[1] as UserDetailsTab ? "active" : ""}
+                        className={activeTab === tabEntry[1] as UserDetailsTab ? styles["active"] : ""}
                         onClick={() => setActiveTab(tabEntry[1] as UserDetailsTab)}
                     >{tabEntry[0]}</li>
                 )}
             </ul>
 
-            <div className="user-details-content">
+            <div>
                 {content}
             </div>
         </>

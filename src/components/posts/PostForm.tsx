@@ -6,7 +6,7 @@ import { dateDiffAsString } from "../../utils/DateUtils"
 import { Post } from "./posts"
 import { useLayoutEffect, useRef } from "react"
 import { selectNextPostId, useAddPostMutation } from "../../redux/modules/postsSlice"
-
+import styles from "./PostsList.module.css"
 
 interface IFormInput {
     postTitle: String
@@ -74,25 +74,25 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
     const { ref: postBodyRef, ...postBodyRest } = register("postBody")
 
     return (
-        <form className="updating-or-adding-post" onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles["updating-or-adding-post"]} onSubmit={handleSubmit(onSubmit)}>
             <li>
-                <div className="post-user-data">
-                    <img src={postUser.avatarSmall} alt="" className="post-user-img" />
-                    <span className="post-user-name">{postUser.username}</span>
-                    <span className="post-user-type">({postUser.type})</span>
-                    <span className="post-user-registered">Registered:<br/>{postUser.registered}</span>
+                <div className={styles["post-user-data"]}>
+                    <img src={postUser.avatarSmall} alt="" className={styles["post-user-img"]} />
+                    <span className={styles["post-user-name"]}>{postUser.username}</span>
+                    <span className={styles["post-user-type"]}>({postUser.type})</span>
+                    <span className={styles["post-user-registered"]}>Registered:<br/>{postUser.registered}</span>
                 </div>
 
-                <div className="post-content">
+                <div className={styles["post-content"]}>
                     {postUser === unknownUser 
-                        ? <h3 className="post-content-title-error">Cannot create a post for unknown user</h3>
+                        ? <h3 className={styles["post-content-title-error"]}>Cannot create a post for unknown user</h3>
                         : <>
-                            <h3 className="post-content-title-edit">{editingPost ? "Updating Post" : "Creating Post"}</h3>
+                            <h3 className={styles["post-content-title-edit"]}>{editingPost ? "Updating Post" : "Creating Post"}</h3>
                             <label>Title</label>
-                            <input className="post-content-title-input" {...register("postTitle")} required></input>
+                            <input className={styles["post-content-title-input"]} {...register("postTitle")} required></input>
                             <label>Post</label>
                             <textarea 
-                                className="post-content-body-input"
+                                className={styles["post-content-body-input"]}
                                 {...postBodyRest}
                                 required
                                 ref={(elem) => {
@@ -105,18 +105,18 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
                     }
                 </div>
 
-                <div className="post-date-and-controls">
+                <div className={styles["post-date-and-controls"]}>
                     {editingPost && (
                         <>
                             <span><i>Posted:</i><br/>{postDate}<br/></span>
-                            <span className="post-date-diff">({dateDiffAsString(new Date(postDate))} ago)</span>
+                            <span className={styles["post-date-diff"]}>({dateDiffAsString(new Date(postDate))} ago)</span>
                         </>
                     )}
                     {isAddPostApiLoading
-                        ? <div className="loading-spinner"></div>
+                        ? <div className={styles["loading-spinner"]}></div>
                         : <>
-                            <input type="submit" className="posts-page-btn" value={editingPost ? "Edit" : "Create"} />
-                            <input type="reset" className="posts-page-btn" value="Cancel" onClick={() => onPostAddOrEditClosed()} />
+                            <input type="submit" className={styles["posts-page-btn"]} value={editingPost ? "Edit" : "Create"} />
+                            <input type="reset" className={styles["posts-page-btn"]} value="Cancel" onClick={() => onPostAddOrEditClosed()} />
                         </>
                     }
                 </div>

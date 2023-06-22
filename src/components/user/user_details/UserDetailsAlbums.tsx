@@ -1,6 +1,7 @@
 import { useGetAlbumsByUserIdQuery } from "../../../redux/modules/usersSlice"
 import { User } from "../users"
 import UserDetailsAlbum from "./UserDetailsAlbum"
+import styles from "./UserDetails.module.css"
 
 export default function UserDetailsAlbums({user}: {user: User}) {
     const {data: albums, isLoading, isError, error} = useGetAlbumsByUserIdQuery(user.id) 
@@ -13,7 +14,7 @@ export default function UserDetailsAlbums({user}: {user: User}) {
     } else if (albums === undefined || albums.length === 0) {
         content = <p>No albums available for this user</p>
     } else {
-        content = <ul className="user-details-albums">{albums.map(album => 
+        content = <ul className={styles["user-details-albums"]}>{albums.map(album => 
             <UserDetailsAlbum key={album.id} albumId={album.id} albumTitle={album.title} /> 
         )}</ul>
     }

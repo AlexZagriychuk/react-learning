@@ -1,4 +1,4 @@
-import "./UsersList.css"
+import styles from "./UsersList.module.css"
 import { selectAllUsers, useGetUsersQuery } from "../../redux/modules/usersSlice"
 import UserListItem from "./UserListItem"
 import { useAppSelector } from "../../redux/hooks"
@@ -13,7 +13,7 @@ export default function UserList() {
     } else if (isLoading) {
         content = <div>Loading...</div>
     } else {
-        content = <ul className="users-list">
+        content = <ul className={styles["users-list"]}>
             {allUsers.map(user => {
                 return <UserListItem key={user.id} {...user} />
             })}

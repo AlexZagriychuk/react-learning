@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useUpdateTodoMutation } from "../../redux/modules/todoSlice";
 import { ToDoItem } from "./todo";
 import { debounce } from "ts-debounce";
+import styles from "./ToDoList.module.css"
 
 export default function ToDoListItem({toDoItem, enableEditing} : {toDoItem: ToDoItem, enableEditing: boolean}) {
     const [completed, setCompleted] = useState(toDoItem.completed)
@@ -34,9 +35,9 @@ export default function ToDoListItem({toDoItem, enableEditing} : {toDoItem: ToDo
 
     return (
         <li>
-            <div className={"todo-item-text" + (completed ? " completed" : "")}>{toDoItem.title}</div>
+            <div className={styles["todo-item-text"] + (completed ? " " + styles["completed"] : "")}>{toDoItem.title}</div>
             <input 
-                className="todo-item-finished" 
+                className={styles["todo-item-finished"]} 
                 type="checkbox" 
                 checked={completed} 
                 disabled={!enableEditing}

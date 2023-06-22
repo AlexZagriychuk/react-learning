@@ -5,7 +5,7 @@ import { selectPosts, useGetPostsQuery } from "../../redux/modules/postsSlice"
 import { selectAllUserEntities, selectCurrentUserId } from "../../redux/modules/usersSlice"
 import ApiError from "../error/ApiError"
 import { getUnknownUser } from "../user/users"
-import "./PostsList.css"
+import styles from "./PostsList.module.css"
 import PostsListItem from "./PostsListItem"
 import PostForm from "./PostForm"
 
@@ -38,10 +38,10 @@ export default function PostsList() {
     if (isLoading) {
         content = <div>Loading...</div>
     } else if (isSuccess) {
-        content = <ul className="posts-list">
+        content = <ul className={styles["posts-list"]}>
             {isAddingNewPost 
                 ? <PostForm postToEditAndUser={null} onPostAddOrEditClosed={onPostAddOrEditClosed} />
-                : <button className="posts-page-btn" onClick={() => setIsAddingNewPost(true)}>Add New Post</button>
+                : <button className={styles["posts-page-btn"]} onClick={() => setIsAddingNewPost(true)}>Add New Post</button>
             }
             {postsListItemsReversed}
         </ul>

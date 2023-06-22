@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { useGetPostsByUserIdQuery } from "../../../redux/modules/usersSlice"
 import PostsListItem from "../../posts/PostsListItem"
 import { User } from "../users"
+import postsStyles from "../../posts/PostsList.module.css"
 
 export default function UserDetailsPosts({user}: {user: User}) {
     const {data: posts, isLoading, isError, error} = useGetPostsByUserIdQuery(user.id) 
@@ -16,7 +17,7 @@ export default function UserDetailsPosts({user}: {user: User}) {
     } else if (isLoading) {
         content = <div>Loading...</div>
     } else {
-        content = <ul className="posts-list">{postsListItemsReversed}</ul>
+        content = <ul className={postsStyles["posts-list"]}>{postsListItemsReversed}</ul>
     }
 
     return (

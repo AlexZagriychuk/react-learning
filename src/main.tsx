@@ -8,7 +8,7 @@ import ErrorPage from './components/error/ErrorPage.tsx'
 import PostsList from './components/posts/PostsList.tsx'
 import ToDoList from './components/todo/ToDoList.tsx'
 import UserList from './components/user/UserList.tsx'
-import Root from './routes/root.tsx'
+import Root from './components/root/Root.tsx'
 import UserDetails from './components/user/user_details/UserDetails.tsx'
 
 

@@ -1,30 +1,29 @@
 import { useAppSelector } from "../../../redux/hooks";
 import { selectCurrentUserId } from "../../../redux/modules/users";
-import { dateDiffAsString } from "../../../utils/dateUtils";
 import { User } from "../../user/userTypes";
+import PostDate from "../PostDate";
+import PostUserData from "../PostUserData";
 import { Post } from "../postsTypes";
-import styles from "./PostsListItem.module.css"
+import postsCommonStyles from "../PostsCommon.module.css"
+import PostContent from "../PostContent";
 
-export default function PostsListItem(props: {post: Post, user: User}) {
+export default function PostsListItem(props: { post: Post, user: User }) {
     const currentUserId = useAppSelector(selectCurrentUserId)
 
     return (
-        <li className={styles["posts-list-item"] + (currentUserId === props.post.userId ? " " + styles["posted-by-current-user"] : "")}>
-            <div className={styles["post-user-data"]}>
-                <img src={props.user.avatarSmall} alt="" className={styles["post-user-img"]} />
-                <span className={styles["post-user-name"]}>{props.user.username}</span>
-                <span className={styles["post-user-type"]}>({props.user.type})</span>
-                <span className={styles["post-user-registered"]}>Registered:<br/>{props.user.registered}</span>
+        <li className={postsCommonStyles["posts-list-item"]
+            + (currentUserId === props.post.userId ? " " + postsCommonStyles["posted-by-current-user"] : "")
+        }>
+            <div className={postsCommonStyles["post-list-item-left-column"]}>
+                <PostUserData user={props.user} />
             </div>
 
-            <div className={styles["post-content"]}>
-                <h3 className={styles["post-content-title"]}>{props.post.title}</h3>
-                <div className={styles["post-content-body"]}>{props.post.body}</div>
+            <div className={postsCommonStyles["post-list-item-middle-column"]}>
+                <PostContent post={props.post} />
             </div>
 
-            <div className={styles["post-date-and-controls"]}>
-                <span><i>Posted:</i><br/>{props.post.date}<br/></span>
-                <span className={styles["post-date-diff"]}>({dateDiffAsString(new Date(props.post.date))} ago)</span>
+            <div className={postsCommonStyles["post-list-item-right-column"]}>
+                <PostDate post={props.post} />
             </div>
         </li>
     )

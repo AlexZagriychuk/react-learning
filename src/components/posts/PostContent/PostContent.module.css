@@ -1,0 +1,35 @@
+@value posted-by-current-user from "../PostsCommon.module.css"; 
+
+.post-content {
+    text-align: left; 
+}
+
+.post-content-title {
+    margin: 0 0 10px;
+
+    text-align: center;
+    color: darkslateblue;
+
+    position: relative;
+}
+
+.post-content-title::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background-color: lightseagreen;
+}
+
+:global(.posted-by-current-user) .post-content-title::after {
+    background-color: rebeccapurple;
+}
+
+.post-content-body {
+    white-space: pre-line;
+}

@@ -1,0 +1,46 @@
+@value posted-by-current-user from "../PostsCommon.module.css"; 
+
+
+.post-form-content {
+    text-align: left; 
+}
+
+.post-form-content-title-edit,
+.post-form-content-title-error {
+    margin: 0 0 10px;
+    text-align: center;
+    color: rgb(51, 153, 131);
+    position: relative; 
+}
+
+.post-form-content-title-error {
+    color: red;
+}
+.post-form-content label {
+    display: block;
+    font-weight: bold;
+}
+
+.post-form-content-title-input,
+.post-form-content-body-input {
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+    padding: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: inherit;
+}
+
+.post-form-content-body-input {
+    resize: none;
+    min-height: 100px;
+}
+
+.post-form-content-title-input:focus, 
+.post-form-content-body-input:focus {
+    outline-color: rgb(51, 153, 131);
+    background-color: white;
+}

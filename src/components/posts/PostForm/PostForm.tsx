@@ -3,15 +3,18 @@ import { User } from "../../user/userTypes"
 import { getUnknownUser } from "../../user/userUtils"
 import { selectCurrentUser } from "../../../redux/modules/users"
 import { useAppSelector } from "../../../redux/hooks"
-import { dateDiffAsString } from "../../../utils/dateUtils"
 import { Post } from "../postsTypes"
-import { useLayoutEffect, useRef } from "react"
+import { useLayoutEffect } from "react"
 import { selectNextPostId } from "../../../redux/modules/posts"
 import { useAddPostMutation } from "../../../redux/modules/posts"
-import { postsListItemStyles } from "../PostsListItem"
+import styles from "./PostForm.module.css"
 import postsCommonStyles from "../PostsCommon.module.css"
+import PostUserData from "../PostUserData"
+import PostDate from "../PostDate"
+import PostControls from "../PostControls/PostControls"
+import PostFormFields from "../PostFormFields"
 
-interface IFormInput {
+export interface IPostFormInput {
     postTitle: String
     postBody: String
 }
@@ -26,6 +29,7 @@ interface PostFormProps {
 
 export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : PostFormProps ) {    
     const [addPost, { isLoading: isAddPostApiLoading, isSuccess: isAddPostApiSuccess }] = useAddPostMutation()
+
     // Avoid console error "Cannot update a component (`PostsList`) while rendering a different component (`PostForm`)" on first post add
     useLayoutEffect(() => {
         if(isAddPostApiSuccess) {
@@ -33,34 +37,18 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
         }
     })
 
-    const changeTextAreaHeightBasedOnScrollHeight = (textarea: HTMLTextAreaElement) => {
-        // Changes textarea element height to fit content + 5px to avoid showing vertical scroll
-        textarea.style.height = ""; 
-        textarea.style.height = textarea.scrollHeight + 5 + "px" 
-    }
-    // Change initial textArea height on 1st render (to avoid the visible first height change on the first textAreaRef onInput event)
-    let textAreaRef = useRef(null as HTMLTextAreaElement | null)
-    useLayoutEffect(() => {
-        if(textAreaRef.current) {
-            changeTextAreaHeightBasedOnScrollHeight(textAreaRef.current)
-        }
-    }, [])
-    
-    const unknownUser = getUnknownUser() 
-    let currentUser = useAppSelector(selectCurrentUser) || unknownUser
+    let currentUser = useAppSelector(selectCurrentUser) || getUnknownUser()
     const nextPostId = useAppSelector(selectNextPostId)
-
     const editingPost = postToEditAndUser !== null
     const postUser = postToEditAndUser?.user || currentUser
-    const postDate = postToEditAndUser?.post.date || new Date().toLocaleString()
 
     const defaultValues = {
         postTitle: postToEditAndUser?.post.title || "",
         postBody: postToEditAndUser?.post.body || ""
     }
 
-    const { register, handleSubmit } = useForm<IFormInput>({defaultValues })
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const { register, handleSubmit } = useForm<IPostFormInput>({defaultValues })
+    const onSubmit: SubmitHandler<IPostFormInput> = (data) => {
         if(editingPost) {
             console.error("POST editing is not implemented yet")
         } else {
@@ -74,56 +62,26 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
             addPost(newPost)
         }
     }
-    const { ref: postBodyRef, ...postBodyRest } = register("postBody")
 
     return (
-        <form className={postsListItemStyles["updating-or-adding-post"]} onSubmit={handleSubmit(onSubmit)}>
-            <li className={postsListItemStyles["posts-list-item"]}>
-                <div className={postsListItemStyles["post-user-data"]}>
-                    <img src={postUser.avatarSmall} alt="" className={postsListItemStyles["post-user-img"]} />
-                    <span className={postsListItemStyles["post-user-name"]}>{postUser.username}</span>
-                    <span className={postsListItemStyles["post-user-type"]}>({postUser.type})</span>
-                    <span className={postsListItemStyles["post-user-registered"]}>Registered:<br/>{postUser.registered}</span>
+        <li className={styles["updating-or-adding-post"]}>
+            <form className={postsCommonStyles["posts-list-item"]} onSubmit={handleSubmit(onSubmit)}>
+                <div className={postsCommonStyles["post-list-item-left-column"]}>
+                    <PostUserData user={postUser} />
                 </div>
 
-                <div className={postsListItemStyles["post-content"]}>
-                    {postUser === unknownUser 
-                        ? <h3 className={postsListItemStyles["post-content-title-error"]}>Cannot create a post for unknown user</h3>
-                        : <>
-                            <h3 className={postsListItemStyles["post-content-title-edit"]}>{editingPost ? "Updating Post" : "Creating Post"}</h3>
-                            <label>Title</label>
-                            <input className={postsListItemStyles["post-content-title-input"]} {...register("postTitle")} required></input>
-                            <label>Post</label>
-                            <textarea 
-                                className={postsListItemStyles["post-content-body-input"]}
-                                {...postBodyRest}
-                                required
-                                ref={(elem) => {
-                                    postBodyRef(elem)
-                                    textAreaRef.current = elem
-                                }}                             
-                                onInput={(e) => changeTextAreaHeightBasedOnScrollHeight(e.target as HTMLTextAreaElement)}
-                            ></textarea>
-                        </>
-                    }
+                <div className={postsCommonStyles["post-list-item-middle-column"]}>
+                    <PostFormFields postUser={postUser} editingPost={editingPost} register={register}  />
                 </div>
 
-                <div className={postsListItemStyles["post-date-and-controls"]}>
-                    {editingPost && (
-                        <>
-                            <span><i>Posted:</i><br/>{postDate}<br/></span>
-                            <span className={postsListItemStyles["post-date-diff"]}>({dateDiffAsString(new Date(postDate))} ago)</span>
-                        </>
-                    )}
+                <div className={postsCommonStyles["post-list-item-right-column"] + " " + styles["center-content-vertically"]}>
+                    {editingPost && <PostDate post={postToEditAndUser.post} />}
                     {isAddPostApiLoading
-                        ? <div className={postsListItemStyles["loading-spinner"]}></div>
-                        : <>
-                            <input type="submit" className={postsCommonStyles["posts-page-btn"]} value={editingPost ? "Edit" : "Create"} />
-                            <input type="reset" className={postsCommonStyles["posts-page-btn"]} value="Cancel" onClick={() => onPostAddOrEditClosed()} />
-                        </>
+                        ? <div className={postsCommonStyles["loading-spinner"]}></div>
+                        : <PostControls isEditingPost={editingPost} onPostAddOrEditClosed={onPostAddOrEditClosed} />
                     }
                 </div>
-            </li>
-        </form>
+            </form>
+        </li>
     )
 }

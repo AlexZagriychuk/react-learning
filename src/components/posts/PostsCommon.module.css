@@ -15,3 +15,84 @@
     box-shadow: 2px 2px 10px rebeccapurple;
     background-color: rgb(136, 80, 192);
 }
+
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.loading-spinner {
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    border: 10px solid white;
+    border-top: 10px solid rgb(51, 153, 131);
+    border-radius: 50%;
+    animation: spinner 1.5s linear infinite;
+}
+
+
+/* =========    List item columns, and lines in between cells    =========*/
+.posts-list-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 10px;
+    outline: 1px solid lightseagreen;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px lightseagreen;
+
+    overflow: hidden; /* because we use 'height: 100vh'; for lines between columns */
+    overflow-wrap: break-word;
+}
+
+.posted-by-current-user {
+    outline: 3px solid rebeccapurple;
+    box-shadow: 5px 5px 10px rebeccapurple;
+}
+
+.post-list-item-left-column {
+    flex-shrink: 0;
+    width: 120px;    
+    position: relative;
+}
+
+.post-list-item-middle-column {
+    flex-grow: 1;
+}
+
+.post-list-item-right-column {
+    flex-shrink: 0;
+    width: 100px;
+    position: relative;
+}
+
+.post-list-item-left-column::after, 
+.post-list-item-right-column::after {
+    content: "";
+    position: absolute;
+    height: 200%; /* extra value to cover paddings of the '.posts-list-item' */
+    width: 1px;
+    background-color: lightseagreen;
+
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.post-list-item-left-column::after {
+    right: -10px;
+}
+
+.post-list-item-right-column::after {
+    left: -10px;
+}
+
+.posted-by-current-user .post-list-item-left-column::after, 
+.posted-by-current-user .post-list-item-right-column::after {
+    background-color: rebeccapurple;
+}

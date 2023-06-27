@@ -1,0 +1,13 @@
+@value posted-by-current-user from "../PostsCommon.module.css"; 
+
+.updating-or-adding-post {
+    border-radius: 10px;
+    background-color: rgb(238, 238, 238);
+    outline: 3px solid rgb(51, 153, 131);
+    box-shadow: 5px 5px 10px grey;
+}
+
+.center-content-vertically {
+    display: flex;
+    align-items: center;
+}

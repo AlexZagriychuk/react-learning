@@ -1,0 +1,8 @@
+.post-controls {
+    height: 100%;
+    font-size: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

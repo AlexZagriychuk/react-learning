@@ -1,0 +1,42 @@
+.user-details-info {
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.user-details-info-avatar {
+    width: 100%;
+    object-fit: fill;
+    border-radius: 10px;
+}
+
+.user-details-info-list {
+    padding: 0 30px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-details-info-list-item {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.user-details-info-icon {
+    flex-basis: 20%;
+    flex-shrink: 0;
+    color: #2C98F0;
+}
+
+.user-details-info-data {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.user-details-info-data-label {
+    font-size: 15px;
+    color: #B8B8B8;
+}

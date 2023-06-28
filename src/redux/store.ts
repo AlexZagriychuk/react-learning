@@ -1,20 +1,18 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './modules/counterSlice'
-import usersSlice from './modules/usersSlice'
-import postsSlice from './modules/postsSlice'
-import todoSlice from './modules/todoSlice'
-import apiErrorsSlice, { apiSlice } from './modules/apiSlice'
+import { configureStore } from "@reduxjs/toolkit"
+import { usersSliceReducer } from "./modules/users"
+import { postsSliceReducer } from "./modules/posts"
+import { todoSliceReducer } from "./modules/todo"
+import { apiErrorsSliceReducer, baseApiSlice } from "./modules/common_api"
 
 export const store = configureStore({
     reducer: {
-        counter: counterSlice,
-        users: usersSlice,
-        posts: postsSlice,
-        todo: todoSlice,
-        api_errors: apiErrorsSlice,
-        [apiSlice.reducerPath]: apiSlice.reducer,
+        users: usersSliceReducer,
+        posts: postsSliceReducer,
+        todo: todoSliceReducer,
+        api_errors: apiErrorsSliceReducer,
+        [baseApiSlice.reducerPath]: baseApiSlice.reducer,
     },
-    middleware: (gDM) => gDM().concat(apiSlice.middleware),
+    middleware: (gDM) => gDM().concat(baseApiSlice.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

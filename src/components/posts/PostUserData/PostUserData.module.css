@@ -1,0 +1,38 @@
+@value posted-by-current-user from "../PostsCommon.module.css"; 
+
+
+.post-user-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-user-img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.post-user-name {
+    width: 100%;
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+:global(.posted-by-current-user) .post-user-name {
+    color: rebeccapurple;
+}
+
+.post-user-type {
+    width: 100%;
+    font-size: 13px;
+    font-style: italic;
+    color: grey;
+}
+
+.post-user-registered {
+    margin-top: 10px;
+    font-size: 13px;
+}

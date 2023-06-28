@@ -1,0 +1,16 @@
+.post-date {
+    height: 100%;
+    font-size: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.post-date-diff {
+    display: block;
+    margin-top: 5px;
+    color: gray;
+    font-size: 14px;
+    font-style: italic;
+}

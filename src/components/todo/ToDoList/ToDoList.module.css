@@ -1,0 +1,17 @@
+.todo-list {
+    margin: 0 auto;
+    padding: 0 0;
+    list-style: none;
+    min-width: 600px;
+    max-width: fit-content;
+
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+@media screen and (max-width: 630px) {
+	.todo-list {
+        min-width: 100%;
+    }
+}

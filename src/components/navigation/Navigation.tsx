@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import "./Navigation.css"
+import styles from "./Navigation.module.css"
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { currentUserChanged, selectCurrentUserId, selectCurrentUser, useGetUsersQuery, selectAllUsers } from "../../redux/modules/usersSlice";
+import { currentUserChanged, selectCurrentUserId, selectCurrentUser, selectAllUsers } from "../../redux/modules/users";
+import { useGetUsersQuery } from "../../redux/modules/users";
 import { useEffect, useState } from "react";
-import { User, getUnknownUser } from "../user/users";
+import { User } from "../user/userTypes";
+import { getUnknownUser } from "../user/userUtils";
 
 export default function Navigation() {
     const dispatch = useAppDispatch()
@@ -47,7 +49,7 @@ export default function Navigation() {
 
     return (
         <>
-            <nav className="horizontal-nav-bar">
+            <nav className={styles["horizontal-nav-bar"]}>
                 <ul>
                     <li>
                         <Link to={`posts`}>Posts</Link>
@@ -60,14 +62,14 @@ export default function Navigation() {
                     </li>
                 </ul>
 
-                <div className="nav-bar-user" onClick={() => setUserSelectionOpened(!userSelectionOpened)}>
-                    <img className="nav-bar-user-avatar" src={currentUser.avatarSmall} alt="Avatar" />
-                    <div className="nav-bar-user-data">
-                        <span className="nav-bar-user-name">{currentUser.username}</span>
-                        <span className="nav-bar-user-type">({currentUser.type})</span>
+                <div className={styles["nav-bar-user"]} onClick={() => setUserSelectionOpened(!userSelectionOpened)}>
+                    <img className={styles["nav-bar-user-avatar"]} src={currentUser.avatarSmall} alt="Avatar" />
+                    <div className={styles["nav-bar-user-data"]}>
+                        <span className={styles["nav-bar-user-name"]}>{currentUser.username}</span>
+                        <span className={styles["nav-bar-user-type"]}>({currentUser.type})</span>
                     </div>
 
-                    <div className={"nav-bar-user-select" + (userSelectionOpened ? " active" : "")}>
+                    <div className={styles["nav-bar-user-select"] + (userSelectionOpened ? " " + styles["active"] : "")}>
                         {usersListContent}
                     </div>
                 </div>

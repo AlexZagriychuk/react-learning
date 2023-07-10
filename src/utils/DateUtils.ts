@@ -1,5 +1,9 @@
-const convertDateStrToLocaleDateStr = (dateStr: string) => {
+const convertDateStrToLocaleStr = (dateStr: string) => {
     return new Date(dateStr).toLocaleString()
+}
+
+const convertDateStrToLocaleDateStr = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString()
 }
 
 const getDateStrEnding = (dateMemberValue: number) => {
@@ -28,35 +32,5 @@ const dateDiffAsString = (date1: Date, date2: Date = new Date()) => {
     return `${diffInDaysTotal} day${getDateStrEnding(diffInDaysTotal)}, ${hours} hour${getDateStrEnding(hours)}`
 }
 
-const getRandomDate = (startDate: Date, endDate: Date) => {
-    const timeDiff = endDate.getTime() - startDate.getTime();
-    const randomTime = Math.random() * timeDiff;
-    const randomDate = new Date(startDate.getTime() + randomTime);
-    return randomDate
-}
 
-// Generate specified number ${datesToGenerateCount} of random dates in chronological order with the specified step range (1 hour by default):
-// - 1st date = random date between firstDateOfRange and firstDateOfRange-1 hour (if datesRangeStep is default); 
-// - 2nd date = random date between firstDateOfRange-1 hour and firstDateOfRange-2 hours (if datesRangeStep is default);
-// - and so on... 
-const generateDates = (datesToGenerateCount: number, firstDateOfRange: Date = new Date(), datesRangeStepUnit: DateUnit = DateUnit.HOUR, datesRangeStepValue: number = -1): Date[] => {
-    const result = Array(datesToGenerateCount) as Date[]
-    const dateStepRangeInMs = datesRangeStepUnit * datesRangeStepValue
-
-    for (let i = 0; i < datesToGenerateCount; i++) {
-        let secondDateOfRange = new Date(firstDateOfRange.getTime() + dateStepRangeInMs)
-        result[i] = getRandomDate(secondDateOfRange, firstDateOfRange)
-        firstDateOfRange = secondDateOfRange
-    }
-
-    return result
-}
-
-enum DateUnit {
-    SECOND = 1000,
-    MINUTE = 1000 * 60,
-    HOUR = 1000 * 60 * 60,
-    DAY = 1000 * 60 * 60 * 24
-}
-
-export { convertDateStrToLocaleDateStr, dateDiffAsString, getRandomDate, generateDates, DateUnit }
+export { convertDateStrToLocaleStr, convertDateStrToLocaleDateStr, dateDiffAsString }

@@ -5,7 +5,10 @@ export { postsSliceReducer } from "./postsSlice"
 export { postAdded, postRemoved } from "./postsSlice"
 
 // Selectors
-export { selectNextPostId, selectPosts } from "./selectors"
+export { selectPosts } from "./selectors"
 
 // RTK API Queries
 export { useGetPostsQuery, useAddPostMutation } from "./postsApi"
+
+// Utils
+export { transformPostsApiResponse } from "./postsApi"

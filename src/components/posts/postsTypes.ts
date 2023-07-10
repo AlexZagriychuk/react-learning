@@ -3,7 +3,7 @@ export interface Post {
     userId: number,
     title: string,
     body: string,
-    date: string
+    createdAt: string
 }
 
 export interface Posts {

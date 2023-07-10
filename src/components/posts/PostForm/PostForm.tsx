@@ -5,7 +5,6 @@ import { selectCurrentUser } from "../../../redux/modules/users"
 import { useAppSelector } from "../../../redux/hooks"
 import { Post } from "../postsTypes"
 import { useLayoutEffect } from "react"
-import { selectNextPostId } from "../../../redux/modules/posts"
 import { useAddPostMutation } from "../../../redux/modules/posts"
 import styles from "./PostForm.module.css"
 import postsCommonStyles from "../PostsCommon.module.css"
@@ -38,7 +37,6 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
     })
 
     let currentUser = useAppSelector(selectCurrentUser) || getUnknownUser()
-    const nextPostId = useAppSelector(selectNextPostId)
     const editingPost = postToEditAndUser !== null
     const postUser = postToEditAndUser?.user || currentUser
 
@@ -54,8 +52,6 @@ export default function PostForm({postToEditAndUser, onPostAddOrEditClosed} : Po
         } else {
             const newPost = {
                 userId: postUser.id,
-                id: nextPostId,
-                date: new Date().toLocaleString(),
                 body: data.postBody.toString(),
                 title: data.postTitle.toString()
             }

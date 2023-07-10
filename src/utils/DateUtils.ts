@@ -1,3 +1,7 @@
+const convertDateStrToLocaleDateStr = (dateStr: string) => {
+    return new Date(dateStr).toLocaleString()
+}
+
 const getDateStrEnding = (dateMemberValue: number) => {
     return dateMemberValue === 1 ? "" : "s"
 }
@@ -55,4 +59,4 @@ enum DateUnit {
     DAY = 1000 * 60 * 60 * 24
 }
 
-export { dateDiffAsString, getRandomDate, generateDates, DateUnit }
+export { convertDateStrToLocaleDateStr, dateDiffAsString, getRandomDate, generateDates, DateUnit }

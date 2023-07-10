@@ -4,6 +4,7 @@ import { DateUnit, generateDates } from "../../../utils/dateUtils";
 import { Post } from "../../../components/posts/postsTypes";
 import { ToDoItem } from "../../../components/todo/todoTypes";
 import { getFakeAdminUser } from "../../../components/user/userUtils";
+import { transformPostsApiResponse } from "../posts";
 
 
 // 1. Replace first user with our fake Admin user
@@ -48,13 +49,7 @@ export const usersApi = baseApiSlice.injectEndpoints({
         getPostsByUserId: builder.query({
             query: (userId: number) => `/users/${userId}/posts`,
             transformResponse: (responseData: Post[]) => {
-                const postsLength = responseData.length;
-
-                // Generate fake post dates (API does not have this field, but our App has)
-                const generatedDates = generateDates(postsLength);
-                responseData.forEach((post, index) => { post.date = generatedDates[postsLength - index - 1].toLocaleString(); });
-
-                return responseData;
+                return transformPostsApiResponse(responseData)
             }
         }),
         getTodosByUserId: builder.query({

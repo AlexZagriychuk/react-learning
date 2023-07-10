@@ -3,7 +3,7 @@ import { baseApiSlice } from "../common_api";
 import { Post } from "../../../components/posts/postsTypes";
 import { ToDoItem } from "../../../components/todo/todoTypes";
 import { transformPostsApiResponse } from "../posts";
-import { convertDateStrToLocaleDateStr } from "../../../utils/dateUtils";
+import { convertDateStrToLocaleDateStr } from "../../../utils/DateUtilsTMP";
 
 
 function transformUser(user: User) {

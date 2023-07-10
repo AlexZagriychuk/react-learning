@@ -1,4 +1,4 @@
-import { dateDiffAsString } from "../../../utils/dateUtils";
+import { dateDiffAsString } from "../../../utils/DateUtilsTMP";
 import { Post } from "../postsTypes";
 import styles from "./PostDate.module.css"
 

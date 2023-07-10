@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import Root from "../components/RootTMP";
+import Root from "../components/Root";
 import ErrorPage from "../components/error/ErrorPage";
 import PostsList from "../components/posts/PostsList";
 import ToDoList from "../components/todo/ToDoList";

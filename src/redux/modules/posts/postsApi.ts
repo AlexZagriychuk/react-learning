@@ -2,7 +2,7 @@ import { Post } from "../../../components/posts/postsTypes";
 import { apiErrorCaught, baseApiSlice } from "../common_api";
 import { ApiErrorComponent } from "../../../components/error/ApiError";
 import { postAdded } from "./postsSlice";
-import { convertDateStrToLocaleStr } from "../../../utils/DateUtilsTMP";
+import { convertDateStrToLocaleStr } from "../../../utils/DateUtils";
 import { usersApi } from "../users";
 import { MaybeDrafted } from "@reduxjs/toolkit/dist/query/core/buildThunks";
 

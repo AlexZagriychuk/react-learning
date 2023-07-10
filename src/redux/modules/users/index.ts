@@ -1,5 +1,6 @@
 // Slice and reducers
 export { usersSliceReducer } from "./usersSlice"
+export { usersApi } from "./usersApi"
 
 // Actions
 export { currentUserChanged } from "./usersSlice"

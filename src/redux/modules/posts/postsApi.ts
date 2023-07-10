@@ -3,6 +3,8 @@ import { apiErrorCaught, baseApiSlice } from "../common_api";
 import { ApiErrorComponent } from "../../../components/error/ApiError";
 import { postAdded } from "./postsSlice";
 import { convertDateStrToLocaleDateStr } from "../../../utils/dateUtils";
+import { usersApi } from "../users";
+import { MaybeDrafted } from "@reduxjs/toolkit/dist/query/core/buildThunks";
 
 
 function transformPost(post: Post) {
@@ -38,9 +40,13 @@ export const postsApi = baseApiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
                     const createdPost = transformPost({...data})
                     dispatch(postAdded(createdPost));
-                    dispatch(postsApi.util.updateQueryData('getPosts', undefined, (draft) => {
+
+                    const updatePostsQueryData = (draft: MaybeDrafted<Post[]>) => {
                         draft.push(createdPost);
-                    }));
+                    }
+                    dispatch(postsApi.util.updateQueryData('getPosts', undefined, updatePostsQueryData));
+                    // Also update usersApi query data for getPostsByUserId
+                    dispatch(usersApi.util.updateQueryData('getPostsByUserId', createdPost.userId, updatePostsQueryData))
                 } catch (e: any) {
                     const error = e.error;
                     const errorText = `Could not add new post (title: '${newPost.title}', body: '${newPost.body}') via API. ${error.data} (${error.originalStatus} - ${error.status})`;

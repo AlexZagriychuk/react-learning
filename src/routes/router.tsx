@@ -36,5 +36,5 @@ export const router = createBrowserRouter(
             ],
         },
     ],
-    { basename: '/react' }
+    { basename: '/portfolio/simple-fullstack-app' }
 );

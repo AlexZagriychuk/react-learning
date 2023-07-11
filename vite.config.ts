@@ -5,8 +5,8 @@ import macrosPlugin from "vite-plugin-babel-macros"
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), macrosPlugin()],
-  base: `/react`,
+  base: `/portfolio/simple-fullstack-app`,
   build: {
-    outDir: './dist/react/'
+    outDir: './dist/portfolio/simple-fullstack-app/'
   }
 })

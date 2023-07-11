@@ -7,8 +7,8 @@ export const getUnknownUser = (): User => {
         type: UserType.READER,
         name: "Unknown",
         username: "Unknown",
-        avatarSmall: "/react/Unknown_person.jpg",
-        avatarBig: "/react/Unknown_person.jpg",
+        avatarSmall: "/portfolio/simple-fullstack-app/Unknown_person.jpg",
+        avatarBig: "/portfolio/simple-fullstack-app/Unknown_person.jpg",
         registered: "-",
         email: "-",
         address: {
